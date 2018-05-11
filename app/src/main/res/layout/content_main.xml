@@ -8,6 +8,11 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main"
     android:id="@+id/LinearLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    app:layout="@layout/todo_item">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ListView"></ListView>
 </LinearLayout>
