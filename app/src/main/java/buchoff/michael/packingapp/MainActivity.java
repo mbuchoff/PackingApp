@@ -12,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     LinearLayout _linearLayout;
     ListView _listView;
     LayoutInflater _layoutInflater;
-    ArrayAdapter<String> _adapter;
+    UsersAdapter _adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +31,12 @@ public class MainActivity extends AppCompatActivity {
         _listView = findViewById(R.id.ListView);
         _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        _adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1);
+        _adapter = new UsersAdapter(this, new ArrayList<User>());
         _listView.setAdapter(_adapter);
     }
 
     public void plusButtonClicked(View view) {
-        _adapter.add("ASDF");
+        _adapter.add(new User("Nsme", "Hometown"));
     }
 
     @Override
