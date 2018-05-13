@@ -1,13 +1,18 @@
 package buchoff.michael.packingapp;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.ArrayAdapter;
+import buchoff.michael.packingapp.databinding.TodoItemBinding;
 
 import java.util.ArrayList;
+
+import static android.databinding.DataBindingUtil.*;
 
 public class UsersAdapter extends ArrayAdapter<User> {
     public UsersAdapter(Context context, ArrayList<User> users) {
@@ -18,16 +23,17 @@ public class UsersAdapter extends ArrayAdapter<User> {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         User user = getItem(position);
+
+        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.todo_item, parent, false);
+            convertView = layoutInflater.inflate(R.layout.todo_item, parent, false);
         }
-        // Lookup view for data population
-        TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
-        TextView tvHome = (TextView) convertView.findViewById(R.id.tvHome);
-        // Populate the data into the template view using the data object
-        tvName.setText(user.name);
-        tvHome.setText(user.hometown);
+
+        TodoItemBinding todoItemBinding = bind(convertView);
+        if (todoItemBinding.getUser() == null) todoItemBinding.setUser(new TodoItem());
+
         // Return the completed view to render on screen
         return convertView;
     }
