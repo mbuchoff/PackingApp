@@ -1,18 +1,13 @@
 package buchoff.michael.packingapp;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import buchoff.michael.packingapp.databinding.TodoItemBinding;
-
 import java.util.ArrayList;
 
-import static android.databinding.DataBindingUtil.*;
+import static android.databinding.DataBindingUtil.bind;
 
 public class UsersAdapter extends ArrayAdapter<User> {
     public UsersAdapter(Context context, ArrayList<User> users) {
@@ -31,8 +26,8 @@ public class UsersAdapter extends ArrayAdapter<User> {
             convertView = layoutInflater.inflate(R.layout.todo_item, parent, false);
         }
 
-        TodoItemBinding todoItemBinding = bind(convertView);
-        if (todoItemBinding.getUser() == null) todoItemBinding.setUser(new TodoItem());
+        buchoff.michael.packingapp.databinding.TodoItemBinding todoItemBinding = bind(convertView);
+        todoItemBinding.setUser(user);
 
         // Return the completed view to render on screen
         return convertView;

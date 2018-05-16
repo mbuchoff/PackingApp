@@ -3,11 +3,11 @@
     <data>
         <variable
             name="user"
-            type="buchoff.michael.packingapp.TodoItem" />
+            type="buchoff.michael.packingapp.User" />
     </data>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{user.firstName}"
+        android:text="@{user.name}"
         android:onClick="@{user::onClicksAreHard}"/>
 </layout>
