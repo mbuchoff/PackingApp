@@ -8,5 +8,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{user.firstName}"/>
+        android:text="@{user.firstName}"
+        android:onClick="@{user::onClicksAreHard}"/>
 </layout>
