@@ -28,15 +28,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         _linearLayout = findViewById(R.id.LinearLayout);
-        _listView = findViewById(R.id.ListView);
+        _listView = findViewById(R.id.listView);
         _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        _adapter = new UsersAdapter(this, new ArrayList<User>());
+        _adapter = new UsersAdapter(this, new ArrayList<TodoItemViewModel>());
         _listView.setAdapter(_adapter);
     }
 
     public void plusButtonClicked(View view) {
-        _adapter.add(new User("Nsme", "Hometown"));
+        TodoItemViewModel viewModel = new TodoItemViewModel();
+        _adapter.add(viewModel);
     }
 
     @Override

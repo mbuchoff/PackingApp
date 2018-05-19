@@ -2,11 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="user"
-            type="buchoff.michael.packingapp.TodoItem" />
+            name="viewModel"
+            type="buchoff.michael.packingapp.TodoItemViewModel" />
     </data>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@{user.firstName}"/>
+        android:text="@{viewModel.firstName}"
+        android:onClick="@{viewModel::onClick}"/>
 </layout>
