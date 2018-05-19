@@ -5,24 +5,31 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TodoItemViewModel extends ViewModel {
     private TodoItem _todoItem;
 
     public TodoItemViewModel(TodoItem todoItem)
     {
         _todoItem = todoItem;
-        firstName = new ObservableField<>(_todoItem._name.get() + " INIT");
 
+        UpdateName();
         _todoItem._name.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                firstName.set(_todoItem._name.get() + " MODIFIED");
+                UpdateName();
             }
         });
     }
 
-    public ObservableField<String> firstName;
-    public final String name = "TheName";
+    public void UpdateName()
+    {
+        Name.set(_todoItem._name.get());
+    }
+
+    public final ObservableField<String> Name = new ObservableField<>();
 
     public void onClick(View view)
     {
