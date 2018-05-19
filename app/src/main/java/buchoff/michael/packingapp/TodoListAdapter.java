@@ -15,9 +15,9 @@ import buchoff.michael.packingapp.databinding.TodoItemBinding;
 
 import static android.databinding.DataBindingUtil.*;
 
-public class UsersAdapter extends ArrayAdapter<TodoItemViewModel> {
-    public UsersAdapter(Context context, ArrayList<TodoItemViewModel> viewModels) {
-        super(context, R.id.listView, viewModels);
+public class TodoListAdapter extends ArrayAdapter<TodoItemViewModel> {
+    public TodoListAdapter(Context context, ArrayList<TodoItemViewModel> viewModels) {
+        super(context, 0, viewModels);
     }
 
     @Override

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout _linearLayout;
     ListView _listView;
     LayoutInflater _layoutInflater;
-    UsersAdapter _adapter;
+    TodoListAdapter _adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
         _listView = findViewById(R.id.listView);
         _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        _adapter = new UsersAdapter(this, new ArrayList<TodoItemViewModel>());
+        _adapter = new TodoListAdapter(this, new ArrayList<TodoItemViewModel>());
         _listView.setAdapter(_adapter);
     }
 
     public void plusButtonClicked(View view) {
-        TodoItemViewModel viewModel = new TodoItemViewModel();
-        _adapter.add(viewModel);
+        TodoItem todoItem = new TodoItem("Hello");
+        _adapter.add(new TodoItemViewModel(todoItem));
     }
 
     @Override
