@@ -16,10 +16,20 @@
             android:text="@{viewModel.Name}"
             android:onTextChanged="@{viewModel::onTextChanged}"
             />
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{viewModel.Name}"
-            android:visibility="@{viewModel.TextReadOnlyVisibility}"/>
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@{viewModel.Name}"
+                android:visibility="@{viewModel.TextReadOnlyVisibility}"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="PLAY"
+                android:onClick="@{viewModel.PlayButtonClicked}"
+                android:visibility="@{viewModel.TextReadOnlyVisibility}"/>
+        </LinearLayout>
     </RelativeLayout>
 </layout>

@@ -38,10 +38,13 @@ public class TodoItemViewModel extends ViewModel {
     public final ObservableField<Integer> TextReadOnlyVisibility = new ObservableField<>(View.INVISIBLE);
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
+        _todoItem._name.set(s.toString());
         if (s.toString().contains("\n"))
         {
             TextInputVisibility.set(View.INVISIBLE);
             TextReadOnlyVisibility.set(View.VISIBLE);
         }
     }
+
+    public void PlayButtonClicked(View view){ }
 }
