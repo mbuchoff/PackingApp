@@ -1,23 +1,24 @@
 package buchoff.michael.packingapp;
 
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
-import android.support.design.widget.TextInputEditText;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
-import android.widget.SearchView;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.w3c.dom.Text;
+
+import java.util.Locale;
 
 public class TodoItemViewModel extends ViewModel {
     private TodoItem _todoItem;
+    private Context _context;
 
-    public TodoItemViewModel(TodoItem todoItem)
+    public TodoItemViewModel(Context context, TodoItem todoItem)
     {
         _todoItem = todoItem;
+        _context = context;
 
         UpdateName();
         _todoItem._name.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
@@ -46,5 +47,18 @@ public class TodoItemViewModel extends ViewModel {
         }
     }
 
-    public void PlayButtonClicked(View view){ }
+    TextToSpeech t1 = null;
+
+    public void PlayButtonClicked(View view)
+    {
+        t1=new TextToSpeech(_context, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                    t1.speak(_todoItem._name.get(), TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+        });
+    }
 }
