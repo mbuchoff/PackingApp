@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="PLAY"
-                android:onClick="@{viewModel.PlayButtonClicked}"
+                android:onClick="@{viewModel::PlayButtonClicked}"
                 android:visibility="@{viewModel.TextReadOnlyVisibility}"/>
         </LinearLayout>
     </RelativeLayout>

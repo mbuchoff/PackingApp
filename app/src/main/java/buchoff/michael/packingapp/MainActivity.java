@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void plusButtonClicked(View view) {
         TodoItem todoItem = new TodoItem("Hello");
-        _adapter.add(new TodoItemViewModel(getApplicationContext(), todoItem));
+        _adapter.add(new TodoItemViewModel(todoItem));
     }
 
     @Override
