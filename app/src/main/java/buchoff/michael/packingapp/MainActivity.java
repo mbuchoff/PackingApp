@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     public void plusButtonClicked(View view) {
         TodoItem todoItem = new TodoItem("Hello");
         _adapter.add(new TodoItemViewModel(todoItem));
+    }
+
+    public void listenButtonClicked(View view) {
+        Log.d("MAIN ACTIVITY","LISTEN BUTTON CLICKED");
     }
 
     @Override
