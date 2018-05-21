@@ -1,7 +1,15 @@
 package buchoff.michael.packingapp;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout _linearLayout;
@@ -40,8 +49,93 @@ public class MainActivity extends AppCompatActivity {
         _adapter.add(new TodoItemViewModel(todoItem));
     }
 
+    final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
     public void listenButtonClicked(View view) {
-        Log.d("MAIN ACTIVITY","LISTEN BUTTON CLICKED");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        }
+
+        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(view.getContext());
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle params) {
+                Log.e("SpeechRecognizer", "onReadyForSpeech");
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                Log.e("SpeechRecognizer", "onBeginningOfSpeech");
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+                Log.e("SpeechRecognizer", "onRmsChanged");
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+                Log.e("SpeechRecognizer", "onBufferReceived");
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                Log.e("SpeechRecognizer", "onEndOfSpeech");
+            }
+
+            @Override
+            public void onError(int error) {
+                // SpeechRecognizer.ERROR_NETWORK == 2
+                Log.e("SpeechRecognizer", "onError - " + Integer.valueOf(error).toString());
+            }
+
+            @Override
+            public void onResults(Bundle results) {
+                Log.e("SpeechRecognizer", "onResults");
+            }
+
+            @Override
+            public void onPartialResults(Bundle partialResults) {
+                Log.e("SpeechRecognizer", "onPartialResults");
+            }
+
+            @Override
+            public void onEvent(int eventType, Bundle params) {
+                Log.e("SpeechRecognizer", "onEvent");
+            }
+        });
+        speechRecognizer.cancel();
+        speechRecognizer.startListening(null);
     }
 
     @Override
