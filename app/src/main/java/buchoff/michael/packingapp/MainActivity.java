@@ -116,7 +116,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError(int error) {
                 // SpeechRecognizer.ERROR_NETWORK == 2
-                Log.e("SpeechRecognizer", "onError - " + Integer.valueOf(error).toString());
+
+                if (error == SpeechRecognizer.ERROR_NETWORK) {
+                    Log.e("SpeechRecognizer", "onError - ERROR_NETWORK");
+                } else {
+                    Log.e("SpeechRecognizer", "onError - " + Integer.valueOf(error).toString());
+                }
             }
 
             @Override
@@ -135,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         speechRecognizer.cancel();
-        speechRecognizer.startListening(null);
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizer.startListening(intent);
     }
 
     @Override
