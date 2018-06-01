@@ -1,10 +1,12 @@
 package buchoff.michael.packingapp;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -86,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
                     new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
         }
 
-        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(view.getContext());
+        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(view.getContext(),
+                ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
@@ -126,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResults(Bundle results) {
-                Log.e("SpeechRecognizer", "onResults");
+                String wordsSpoken = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
+                Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
             }
 
             @Override
@@ -139,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("SpeechRecognizer", "onEvent");
             }
         });
-        speechRecognizer.cancel();
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechRecognizer.startListening(intent);
     }
