@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRmsChanged(float rmsdB) {
-                Log.e("SpeechRecognizer", "onRmsChanged");
+//                Log.e("SpeechRecognizer", "onRmsChanged");
             }
 
             @Override
@@ -135,7 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPartialResults(Bundle partialResults) {
-                Log.e("SpeechRecognizer", "onPartialResults");
+                String wordsSpoken = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
+                Log.e("SpeechRecognizer", "onPartialResults - " + wordsSpoken);
             }
 
             @Override
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         speechRecognizer.startListening(intent);
     }
 
