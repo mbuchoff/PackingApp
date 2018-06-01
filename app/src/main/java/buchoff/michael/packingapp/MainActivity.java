@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
         }
 
-        SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(view.getContext(),
+        final SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(view.getContext(),
                 ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResults(Bundle results) {
                 String wordsSpoken = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
                 Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
+                speechRecognizer.destroy();
             }
 
             @Override
