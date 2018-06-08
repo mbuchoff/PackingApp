@@ -88,76 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
         }
 
-        final SpeechRecognizer speechRecognizer = SpeechRecognizer.createSpeechRecognizer(view.getContext(),
-                ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
-
-        final Intent speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        speechIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        speechIntent.putExtra(RecognizerIntent.EXTRA_PREFER_OFFLINE, true);
-        speechIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20L);
-
-        class RecognitionListenerr implements RecognitionListener {
-            @Override
-            public void onReadyForSpeech(Bundle params) {
-                Log.e("SpeechRecognizer", "onReadyForSpeech");
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-                Log.e("SpeechRecognizer", "onBeginningOfSpeech");
-            }
-
-            @Override
-            public void onRmsChanged(float rmsdB) {
-//                Log.e("SpeechRecognizer", "onRmsChanged");
-            }
-
-            @Override
-            public void onBufferReceived(byte[] buffer) {
-                Log.e("SpeechRecognizer", "onBufferReceived");
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-                Log.e("SpeechRecognizer", "onEndOfSpeech");
-            }
-
-            @Override
-            public void onError(int error) {
-                // SpeechRecognizer.ERROR_NETWORK == 2
-
-                if (error == SpeechRecognizer.ERROR_NETWORK) {
-                    Log.e("SpeechRecognizer", "onError - ERROR_NETWORK");
-                } else if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
-                    Log.e("SpeechRecognizer", "onError - ERROR_RECOGNIZER_BUSY");
-                } else if (error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
-                    Log.e("SpeechRecognizer", "onError - ERROR_SPEECH_TIMEOUT");
-                } else {
-                    Log.e("SpeechRecognizer", "onError - " + Integer.valueOf(error).toString());
-                }
-            }
-
-            @Override
-            public void onResults(Bundle results) {
-                String wordsSpoken = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
-                Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
-                speechRecognizer.startListening(speechIntent);
-            }
-
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-                String wordsSpoken = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
-                Log.e("SpeechRecognizer", "onPartialResults - " + wordsSpoken);
-            }
-
-            @Override
-            public void onEvent(int eventType, Bundle params) {
-                Log.e("SpeechRecognizer", "onEvent");
-            }
-        };
-
-        speechRecognizer.setRecognitionListener(new RecognitionListenerr());
-        speechRecognizer.startListening(speechIntent);
+        new ContinuousSpeechRecognizer(view.getContext()).startListening();
     }
 
     @Override
