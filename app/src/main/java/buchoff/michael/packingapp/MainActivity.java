@@ -1,35 +1,29 @@
 package buchoff.michael.packingapp;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Message;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout _linearLayout;
     ListView _listView;
     LayoutInflater _layoutInflater;
     TodoListAdapter _adapter;
+    Button _listenButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         _linearLayout = findViewById(R.id.LinearLayout);
         _listView = findViewById(R.id.listView);
         _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        _listenButton = findViewById(R.id.listenButton);
 
         _adapter = new TodoListAdapter(this, new ArrayList<TodoItemViewModel>());
         _listView.setAdapter(_adapter);
@@ -88,7 +83,20 @@ public class MainActivity extends AppCompatActivity {
                     new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
         }
 
-        new ContinuousSpeechRecognizer(view.getContext()).startListening();
+        ContinuousSpeechRecognizer continuousSpeechRecognizer = new ContinuousSpeechRecognizer(view.getContext());
+        continuousSpeechRecognizer.setListener(new ContinuousSpeechRecognizer.Listener() {
+            @Override
+            public void onResults(String results) {
+                _listenButton.setText(results);
+            }
+
+            @Override
+            public void onPartialResults(String partialResults) {
+                _listenButton.setText(partialResults);
+            }
+        });
+        continuousSpeechRecognizer.startListening();
+
     }
 
     @Override

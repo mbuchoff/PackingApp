@@ -17,6 +17,13 @@ public class ContinuousSpeechRecognizer {
     int _prevVolume;
     AudioManager _audioManager;
     RecognitionListener _recognitionListener;
+    Listener _listener;
+
+    public interface Listener
+    {
+        void onResults(String results);
+        void onPartialResults(String partialResults);
+    }
 
     ContinuousSpeechRecognizer(Context context){
         _context = context;
@@ -26,6 +33,7 @@ public class ContinuousSpeechRecognizer {
 
         _speechIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         _speechIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20L);
+        _listener = null;
 
         _recognitionListener = new RecognitionListener() {
             @Override
@@ -76,6 +84,11 @@ public class ContinuousSpeechRecognizer {
             @Override
             public void onResults(Bundle results) {
                 String wordsSpoken = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
+                if (_listener != null)
+                {
+                    _listener.onResults(wordsSpoken);
+                }
+
                 Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
                 restartListening();
             }
@@ -84,6 +97,10 @@ public class ContinuousSpeechRecognizer {
             public void onPartialResults(Bundle partialResults) {
                 String wordsSpoken = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
                 Log.e("SpeechRecognizer", "onPartialResults - " + wordsSpoken);
+                if (_listener != null)
+                {
+                    _listener.onPartialResults(wordsSpoken);
+                }
             }
 
             @Override
@@ -92,6 +109,11 @@ public class ContinuousSpeechRecognizer {
             }
         };
         _speechRecognizer.setRecognitionListener(_recognitionListener);
+    }
+
+    public void setListener(Listener listener)
+    {
+        _listener = listener;
     }
 
     public void recoverFromError() {
