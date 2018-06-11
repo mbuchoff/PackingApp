@@ -1,23 +1,29 @@
 package buchoff.michael.packingapp;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 public class ContinuousSpeechRecognizer {
     SpeechRecognizer _speechRecognizer;
     Intent _speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-    Context _context;
+    Activity _activity;
     int _prevVolume;
     AudioManager _audioManager;
     RecognitionListener _recognitionListener;
     Listener _listener;
+    final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
 
     public interface Listener
     {
@@ -25,9 +31,11 @@ public class ContinuousSpeechRecognizer {
         void onPartialResults(String partialResults);
     }
 
-    ContinuousSpeechRecognizer(Context context){
-        _context = context;
-        _audioManager =(AudioManager)_context.getSystemService(Context.AUDIO_SERVICE);
+    ContinuousSpeechRecognizer(Activity activity){
+        _activity = activity;
+        Context context = activity.getApplicationContext();
+
+        _audioManager =(AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
         _speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context,
                 ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
 
@@ -118,7 +126,7 @@ public class ContinuousSpeechRecognizer {
 
     public void recoverFromError() {
         _speechRecognizer.destroy();
-        _speechRecognizer = SpeechRecognizer.createSpeechRecognizer(_context,
+        _speechRecognizer = SpeechRecognizer.createSpeechRecognizer(_activity.getApplicationContext(),
                 ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
         _speechRecognizer.setRecognitionListener(_recognitionListener);
 
@@ -126,6 +134,19 @@ public class ContinuousSpeechRecognizer {
     }
 
     public void startListening() {
+        Context context = _activity.getApplicationContext();
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(_activity,
+                    new String[] {Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        }
+
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(_activity,
+                    new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        }
+
         mute();
         restartListening();
     }

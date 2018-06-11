@@ -46,44 +46,10 @@ public class MainActivity extends AppCompatActivity {
         _adapter.add(new TodoItemViewModel(todoItem));
     }
 
-    final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request.
-        }
-    }
-
     public void listenButtonClicked(View view) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
-        }
+        new TodoItemsTraverser(_adapter);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
-        }
-
-        ContinuousSpeechRecognizer continuousSpeechRecognizer = new ContinuousSpeechRecognizer(view.getContext());
+        ContinuousSpeechRecognizer continuousSpeechRecognizer = new ContinuousSpeechRecognizer(this);
         continuousSpeechRecognizer.setListener(new ContinuousSpeechRecognizer.Listener() {
             @Override
             public void onResults(String results) {
