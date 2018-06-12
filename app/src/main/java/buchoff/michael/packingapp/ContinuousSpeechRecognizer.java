@@ -58,8 +58,8 @@ public class ContinuousSpeechRecognizer {
 
             @Override
             public void onBeginningOfSpeech() {
+                mute();
                 Log.e("SpeechRecognizer", "onBeginningOfSpeech");
-                unmute();
             }
 
             @Override
@@ -69,7 +69,7 @@ public class ContinuousSpeechRecognizer {
 
             @Override
             public void onBufferReceived(byte[] buffer) {
-                Log.e("SpeechRecognizer", "onBufferReceived");
+                //Log.e("SpeechRecognizer", "onBufferReceived");
             }
 
             @Override
@@ -104,7 +104,7 @@ public class ContinuousSpeechRecognizer {
                     _listener.onResults(wordsSpoken);
                 }
 
-                Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
+                //Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
 
                 if (_shouldListen) {
                     restartListening();
@@ -114,7 +114,7 @@ public class ContinuousSpeechRecognizer {
             @Override
             public void onPartialResults(Bundle partialResults) {
                 String wordsSpoken = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION).get(0);
-                Log.e("SpeechRecognizer", "onPartialResults - " + wordsSpoken);
+                //Log.e("SpeechRecognizer", "onPartialResults - " + wordsSpoken);
                 if (_listener != null)
                 {
                     _listener.onPartialResults(wordsSpoken);
@@ -123,7 +123,7 @@ public class ContinuousSpeechRecognizer {
 
             @Override
             public void onEvent(int eventType, Bundle params) {
-                Log.e("SpeechRecognizer", "onEvent");
+                //Log.e("SpeechRecognizer", "onEvent");
             }
         };
         _speechRecognizer.setRecognitionListener(_recognitionListener);
@@ -160,7 +160,6 @@ public class ContinuousSpeechRecognizer {
                     new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
         }
 
-        mute();
         restartListening();
     }
 
@@ -169,11 +168,16 @@ public class ContinuousSpeechRecognizer {
     }
 
     void mute() {
-        _prevVolume = _audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        _audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+        Log.e("SpeechRecognizer", "mute");
+        int volume = _audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        if (volume != 0) {
+            _prevVolume = volume;
+            _audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+        }
     }
 
     void unmute() {
+        Log.e("SpeechRecognizer", "unmute");
         _audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, _prevVolume, AudioManager.ADJUST_SAME);
     }
 
