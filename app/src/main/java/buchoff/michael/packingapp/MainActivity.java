@@ -1,5 +1,10 @@
 package buchoff.michael.packingapp;
 
+// TODO:  Run Lint
+// TODO:  Stop Listening Button
+// TODO:  Crash after iterating past end of list
+// TODO:  Save/Load
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
