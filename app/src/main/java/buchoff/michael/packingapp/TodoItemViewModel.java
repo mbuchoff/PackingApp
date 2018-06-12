@@ -11,6 +11,7 @@ import android.view.View;
 
 public class TodoItemViewModel extends ViewModel {
     private TodoItem _todoItem;
+    private boolean _isEditing = true;
 
     public TodoItemViewModel(TodoItem todoItem)
     {
@@ -18,18 +19,30 @@ public class TodoItemViewModel extends ViewModel {
 
         UpdateName();
         UpdateBackgroundColor();
+        UpdateEditingMode();
 
-        _todoItem._name.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        _todoItem.get_name().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {UpdateName();
             }
         });
-        _todoItem._isHighlighted.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        _todoItem.get_isHighlighted().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 UpdateBackgroundColor();
             }
         });
+    }
+
+    private void UpdateEditingMode()
+    {
+        if (_isEditing) {
+            TextInputVisibility.set(View.VISIBLE);
+            TextReadOnlyVisibility.set(View.INVISIBLE);
+        } else {
+            TextInputVisibility.set(View.INVISIBLE);
+            TextReadOnlyVisibility.set(View.VISIBLE);
+        }
     }
 
     public TodoItem getData() {
@@ -38,12 +51,12 @@ public class TodoItemViewModel extends ViewModel {
 
     public void UpdateName()
     {
-        Name.set(_todoItem._name.get());
+        Name.set(_todoItem.get_name().get());
     }
 
     public void UpdateBackgroundColor()
     {
-        if (_todoItem._isHighlighted.get()) {
+        if (_todoItem.get_isHighlighted().get()) {
             BackgroundColor.set(Color.rgb(200,255,200));
         } else {
             BackgroundColor.set(Color.rgb(255,255,255));
@@ -51,21 +64,20 @@ public class TodoItemViewModel extends ViewModel {
     }
 
     public final ObservableField<String> Name = new ObservableField<>();
-    public final ObservableField<Integer> TextInputVisibility = new ObservableField<>(View.VISIBLE);
-    public final ObservableField<Integer> TextReadOnlyVisibility = new ObservableField<>(View.INVISIBLE);
-    public final ObservableField<Integer> BackgroundColor = new ObservableField<>(Color.rgb(255, 255, 255));
+    public final ObservableField<Integer> TextInputVisibility = new ObservableField<>();
+    public final ObservableField<Integer> TextReadOnlyVisibility = new ObservableField<>();
+    public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        _todoItem._name.set(s.toString());
+        _todoItem.get_name().set(s.toString());
         if (s.toString().contains("\n")) {
-            TextInputVisibility.set(View.INVISIBLE);
-            TextReadOnlyVisibility.set(View.VISIBLE);
-            _todoItem._isHighlighted.set(true);
+            _isEditing = false;
+            UpdateEditingMode();
         }
     }
 
     public void PlayButtonClicked(View view) {
-        TTSFactory.findTTS(view.getContext()).speak(_todoItem._name.get(), TextToSpeech.QUEUE_ADD, null);
+        TTSFactory.findTTS(view.getContext()).speak(_todoItem.get_name().get(), TextToSpeech.QUEUE_FLUSH, null);
     }
 
 }

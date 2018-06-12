@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     LayoutInflater _layoutInflater;
     TodoListAdapter _adapter;
     Button _listenButton;
+    TodoItemsTraverser _todoItemsTraverser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
         _adapter = new TodoListAdapter(this, new ArrayList<TodoItemViewModel>());
         _listView.setAdapter(_adapter);
+        _todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
+        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
+            @Override
+            public void onWordsSpoken(String wordsSpoken) {
+                _listenButton.setText(wordsSpoken);
+            }
+        });
     }
 
     public void plusButtonClicked(View view) {
@@ -47,22 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listenButtonClicked(View view) {
-        new TodoItemsTraverser(_adapter);
-
-        ContinuousSpeechRecognizer continuousSpeechRecognizer = new ContinuousSpeechRecognizer(this);
-        continuousSpeechRecognizer.setListener(new ContinuousSpeechRecognizer.Listener() {
-            @Override
-            public void onResults(String results) {
-                _listenButton.setText(results);
-            }
-
-            @Override
-            public void onPartialResults(String partialResults) {
-                _listenButton.setText(partialResults);
-            }
-        });
-        continuousSpeechRecognizer.startListening();
-
+        _todoItemsTraverser.start();
     }
 
     @Override
