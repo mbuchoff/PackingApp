@@ -57,8 +57,13 @@ public class TodoItemsTraverser {
         _continuousSpeechRecognizer.setListener(new ContinuousSpeechRecognizer.Listener() {
             @Override
             public void onResults(String results) {
-                _results = _results + " " + results;
+                if (!_keyphraseDetectedThisResultsSession)
+                {
+                    _results = _results + " " + results;
+                }
+
                 wordsSpoken(_results);
+
                 _keyphraseDetectedThisResultsSession = false;
             }
 
