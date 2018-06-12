@@ -141,7 +141,7 @@ public class ContinuousSpeechRecognizer {
                 ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
         _speechRecognizer.setRecognitionListener(_recognitionListener);
 
-        startListening();
+        restartListening();
     }
 
     public void startListening() {
