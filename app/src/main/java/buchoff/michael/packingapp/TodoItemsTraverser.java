@@ -17,6 +17,7 @@ public class TodoItemsTraverser {
     private Listener _listener = null;
     private TextToSpeech _tts;
     private Handler _uiHandler;
+    private boolean _keyphraseDetectedThisResultsSession;
 
     private Runnable _speechRecognizerStartRunnable = new Runnable() {
         @Override
@@ -58,6 +59,7 @@ public class TodoItemsTraverser {
             public void onResults(String results) {
                 _results = _results + " " + results;
                 wordsSpoken(_results);
+                _keyphraseDetectedThisResultsSession = false;
             }
 
             @Override
@@ -71,12 +73,15 @@ public class TodoItemsTraverser {
                     _listener.onWordsSpoken(words);
                 }
 
-                if (Arrays.asList(words.toLowerCase().split(" ")).contains("check"))
-                {
-                    endTodoItem();
-                    _todoItemIndex++;
-                    beginTodoItem();
-                    _results = "";
+                if ( !_keyphraseDetectedThisResultsSession ) {
+                    if (Arrays.asList(words.toLowerCase().split(" ")).contains("check")) {
+                        endTodoItem();
+                        _todoItemIndex++;
+                        beginTodoItem();
+
+                        _results = "";
+                        _keyphraseDetectedThisResultsSession = true;
+                    }
                 }
             }
         });
@@ -84,6 +89,7 @@ public class TodoItemsTraverser {
 
     public void start()
     {
+        _keyphraseDetectedThisResultsSession = false;
         beginTodoItem();
     }
 

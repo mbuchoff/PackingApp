@@ -16,14 +16,15 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 public class ContinuousSpeechRecognizer {
-    SpeechRecognizer _speechRecognizer;
-    Intent _speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-    Activity _activity;
-    int _prevVolume;
-    AudioManager _audioManager;
-    RecognitionListener _recognitionListener;
-    Listener _listener;
-    final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
+    private SpeechRecognizer _speechRecognizer;
+    private Intent _speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+    private Activity _activity;
+    private int _prevVolume;
+    private AudioManager _audioManager;
+    private RecognitionListener _recognitionListener;
+    private Listener _listener;
+    private final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
+    private boolean _shouldListen = false;
 
     public interface Listener
     {
@@ -98,7 +99,10 @@ public class ContinuousSpeechRecognizer {
                 }
 
                 Log.e("SpeechRecognizer", "onResults - " + wordsSpoken);
-                restartListening();
+
+                if (_shouldListen) {
+                    restartListening();
+                }
             }
 
             @Override
@@ -134,6 +138,7 @@ public class ContinuousSpeechRecognizer {
     }
 
     public void startListening() {
+        _shouldListen = true;
         Context context = _activity.getApplicationContext();
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
         {
@@ -166,6 +171,7 @@ public class ContinuousSpeechRecognizer {
 
     public void stopListening()
     {
+        _shouldListen = false;
         unmute();
         _speechRecognizer.stopListening();
     }

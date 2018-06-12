@@ -1,11 +1,7 @@
 package buchoff.michael.packingapp;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,12 +15,12 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    LinearLayout _linearLayout;
-    ListView _listView;
-    LayoutInflater _layoutInflater;
-    TodoListAdapter _adapter;
-    Button _listenButton;
-    TodoItemsTraverser _todoItemsTraverser;
+    private LinearLayout _linearLayout;
+    private ListView _listView;
+    private LayoutInflater _layoutInflater;
+    private TodoListAdapter _adapter;
+    private Button _listenButton;
+    private TodoItemsTraverser _todoItemsTraverser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void listenButtonClicked(View view) {
         _todoItemsTraverser.start();
+        _listenButton.setEnabled(false);
     }
 
     @Override
