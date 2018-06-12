@@ -84,6 +84,7 @@ public class ContinuousSpeechRecognizer {
                 } else if (error == SpeechRecognizer.ERROR_RECOGNIZER_BUSY) {
                     Log.e("SpeechRecognizer", "onError - ERROR_RECOGNIZER_BUSY");
                 } else if (error == SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
+                    mute();
                     Log.e("SpeechRecognizer", "onError - ERROR_SPEECH_TIMEOUT");
                     recoverFromError();
                 } else if (error == SpeechRecognizer.ERROR_CLIENT) {
