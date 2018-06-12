@@ -163,4 +163,10 @@ public class ContinuousSpeechRecognizer {
     void unmute() {
         _audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, _prevVolume, AudioManager.ADJUST_SAME);
     }
+
+    public void stopListening()
+    {
+        unmute();
+        _speechRecognizer.stopListening();
+    }
 }
