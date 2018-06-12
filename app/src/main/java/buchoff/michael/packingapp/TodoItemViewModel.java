@@ -12,49 +12,48 @@ import android.view.View;
 public class TodoItemViewModel extends ViewModel {
     private TodoItem _todoItem;
     private boolean _isEditing = true;
+    private Listener _listener = null;
+
+    interface Listener
+    {
+        void requestDeletion(TodoItemViewModel viewModel);
+    }
 
     public TodoItemViewModel(TodoItem todoItem)
     {
         _todoItem = todoItem;
 
-        UpdateName();
-        UpdateBackgroundColor();
-        UpdateEditingMode();
+        updateName();
+        updateBackgroundColor();
 
         _todoItem.get_name().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {UpdateName();
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                updateName();
             }
         });
         _todoItem.get_status().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                UpdateBackgroundColor();
+                updateBackgroundColor();
             }
         });
     }
 
-    private void UpdateEditingMode()
-    {
-        if (_isEditing) {
-            TextInputVisibility.set(View.VISIBLE);
-            TextReadOnlyVisibility.set(View.INVISIBLE);
-        } else {
-            TextInputVisibility.set(View.INVISIBLE);
-            TextReadOnlyVisibility.set(View.VISIBLE);
-        }
+    public void set_listener(Listener listener) {
+        _listener = listener;
     }
 
     public TodoItem getData() {
         return _todoItem;
     }
 
-    public void UpdateName()
+    private void updateName()
     {
         Name.set(_todoItem.get_name().get());
     }
 
-    public void UpdateBackgroundColor()
+    private void updateBackgroundColor()
     {
         TodoItem.Status status = _todoItem.get_status().get();
         if (status == TodoItem.Status.ACTIVE) {
@@ -67,20 +66,15 @@ public class TodoItemViewModel extends ViewModel {
     }
 
     public final ObservableField<String> Name = new ObservableField<>();
-    public final ObservableField<Integer> TextInputVisibility = new ObservableField<>();
-    public final ObservableField<Integer> TextReadOnlyVisibility = new ObservableField<>();
     public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        _todoItem.get_name().set(s.toString().replace("\n", ""));
-        if (s.toString().contains("\n")) {
-            _isEditing = false;
-            UpdateEditingMode();
+        _todoItem.get_name().set(s.toString());
+    }
+
+    public void deleteButtonClicked(View view) {
+        if (_listener != null) {
+            _listener.requestDeletion(this);
         }
     }
-
-    public void PlayButtonClicked(View view) {
-        TTSFactory.findTTS(view.getContext()).speak(_todoItem.get_name().get(), TextToSpeech.QUEUE_FLUSH, null);
-    }
-
 }
