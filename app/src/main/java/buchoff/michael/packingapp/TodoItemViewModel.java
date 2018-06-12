@@ -26,7 +26,7 @@ public class TodoItemViewModel extends ViewModel {
             public void onPropertyChanged(Observable sender, int propertyId) {UpdateName();
             }
         });
-        _todoItem.get_isHighlighted().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        _todoItem.get_status().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 UpdateBackgroundColor();
@@ -56,10 +56,13 @@ public class TodoItemViewModel extends ViewModel {
 
     public void UpdateBackgroundColor()
     {
-        if (_todoItem.get_isHighlighted().get()) {
-            BackgroundColor.set(Color.rgb(200,255,200));
-        } else {
+        TodoItem.Status status = _todoItem.get_status().get();
+        if (status == TodoItem.Status.ACTIVE) {
+            BackgroundColor.set(Color.rgb(255,255,0));
+        } else if (status == TodoItem.Status.PENDING) {
             BackgroundColor.set(Color.rgb(255,255,255));
+        } else {
+            BackgroundColor.set(Color.rgb(0,255,0));
         }
     }
 

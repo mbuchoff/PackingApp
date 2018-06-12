@@ -96,7 +96,7 @@ public class TodoItemsTraverser {
     private void beginTodoItem()
     {
         TodoItem todoItem = get_todoItem();
-        todoItem.get_isHighlighted().set(true);
+        todoItem.get_status().set(TodoItem.Status.ACTIVE);
         _tts.setOnUtteranceProgressListener(_utteranceProgressListener);
         HashMap<String, String> ttsParams = new HashMap<>();
         ttsParams.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Finished speaking");
@@ -106,7 +106,7 @@ public class TodoItemsTraverser {
     private void endTodoItem()
     {
         TodoItem todoItem = get_todoItem();
-        todoItem.get_isHighlighted().set(false);
+        todoItem.get_status().set(TodoItem.Status.FINISHED);
         _continuousSpeechRecognizer.stopListening();
     }
 
