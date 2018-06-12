@@ -25,11 +25,13 @@ public class ContinuousSpeechRecognizer {
     private Listener _listener;
     private final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
     private boolean _shouldListen = false;
+    private boolean _shouldReportSpeechRecognitionReady;
 
     public interface Listener
     {
         void onResults(String results);
         void onPartialResults(String partialResults);
+        void onSpeechRecognitionReady();
     }
 
     ContinuousSpeechRecognizer(Activity activity){
@@ -48,6 +50,10 @@ public class ContinuousSpeechRecognizer {
             @Override
             public void onReadyForSpeech(Bundle params) {
                 Log.e("SpeechRecognizer", "onReadyForSpeech");
+                if (_shouldReportSpeechRecognitionReady && _listener != null) {
+                    _listener.onSpeechRecognitionReady();
+                    _shouldReportSpeechRecognitionReady = false;
+                }
             }
 
             @Override
@@ -139,6 +145,8 @@ public class ContinuousSpeechRecognizer {
 
     public void startListening() {
         _shouldListen = true;
+        _shouldReportSpeechRecognitionReady = true;
+
         Context context = _activity.getApplicationContext();
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
         {

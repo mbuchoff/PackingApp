@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:text="Listen"
         android:id="@+id/listenButton"
+        android:enabled="false"
         android:onClick="listenButtonClicked"/>
     <ListView
         android:layout_width="match_parent"

@@ -72,7 +72,7 @@ public class TodoItemViewModel extends ViewModel {
     public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        _todoItem.get_name().set(s.toString());
+        _todoItem.get_name().set(s.toString().replace("\n", ""));
         if (s.toString().contains("\n")) {
             _isEditing = false;
             UpdateEditingMode();

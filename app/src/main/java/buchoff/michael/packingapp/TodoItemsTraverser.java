@@ -42,6 +42,7 @@ public class TodoItemsTraverser {
     interface Listener
     {
         void onWordsSpoken(String wordsSpoken);
+        void onSpeechRecognitionReady();
     }
 
     void setListener(Listener listener)
@@ -70,6 +71,13 @@ public class TodoItemsTraverser {
             @Override
             public void onPartialResults(String partialResults) {
                 wordsSpoken(_results + " " + partialResults);
+            }
+
+            @Override
+            public void onSpeechRecognitionReady() {
+                if (_listener != null) {
+                    _listener.onSpeechRecognitionReady();
+                }
             }
 
             void wordsSpoken(String words)

@@ -42,17 +42,24 @@ public class MainActivity extends AppCompatActivity {
             public void onWordsSpoken(String wordsSpoken) {
                 _listenButton.setText(wordsSpoken);
             }
+
+            @Override
+            public void onSpeechRecognitionReady() {
+                _listenButton.setText("HIT IT!");
+            }
         });
     }
 
     public void plusButtonClicked(View view) {
         TodoItem todoItem = new TodoItem("Hello");
         _adapter.add(new TodoItemViewModel(todoItem));
+        _listenButton.setEnabled(true);
     }
 
     public void listenButtonClicked(View view) {
-        _todoItemsTraverser.start();
+        _listenButton.setText("Starting speech recognition...");
         _listenButton.setEnabled(false);
+        _todoItemsTraverser.start();
     }
 
     @Override
