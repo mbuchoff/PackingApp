@@ -8,6 +8,8 @@ package buchoff.michael.packingapp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout _linearLayout;
-    private ListView _listView;
+    private RecyclerView _recyclerView;
     private LayoutInflater _layoutInflater;
     private TodoListAdapter _adapter;
     private Button _listenButton;
@@ -35,29 +37,36 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         _linearLayout = findViewById(R.id.LinearLayout);
-        _listView = findViewById(R.id.listView);
         _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         _listenButton = findViewById(R.id.listenButton);
+        _recyclerView = findViewById(R.id.recyclerView);
 
-        _adapter = new TodoListAdapter(this, new ArrayList<TodoItemViewModel>());
-        _listView.setAdapter(_adapter);
-        _todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
-        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
-            @Override
-            public void onWordsSpoken(String wordsSpoken) {
-                _listenButton.setText(wordsSpoken);
-            }
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        _recyclerView.setLayoutManager(layoutManager);
+        TodoListAdapter adapter = new TodoListAdapter();
+        _recyclerView.setAdapter(adapter);
 
-            @Override
-            public void onSpeechRecognitionReady() {
-                _listenButton.setText("HIT IT!");
-            }
-        });
+        //_todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
+        //    @Override
+        //    public void onWordsSpoken(String wordsSpoken) {
+        //        _listenButton.setText(wordsSpoken);
+        //    }
+//
+  //          @Override
+    //        public void onSpeechRecognitionReady() {
+      //          _listenButton.setText("HIT IT!");
+        //    }
+        //});
     }
 
     public void plusButtonClicked(View view) {
         TodoItem todoItem = new TodoItem("Hello");
-        _adapter.add(new TodoItemViewModel(todoItem));
+
+        // TODO:  Should be accessing adapter.  Make it more elegant.
+        TodoListAdapter adapter = ((TodoListAdapter)_recyclerView.getAdapter());
+        adapter._viewModels.add(new TodoItemViewModel(todoItem));
+        adapter.notifyDataSetChanged();
+
         _listenButton.setEnabled(true);
     }
 

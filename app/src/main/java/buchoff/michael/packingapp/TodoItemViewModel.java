@@ -4,14 +4,10 @@ import android.arch.lifecycle.ViewModel;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.graphics.Color;
-import android.speech.tts.TextToSpeech;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 
 public class TodoItemViewModel extends ViewModel {
     private TodoItem _todoItem;
-    private boolean _isEditing = true;
     private Listener _listener = null;
 
     interface Listener
@@ -67,9 +63,21 @@ public class TodoItemViewModel extends ViewModel {
 
     public final ObservableField<String> Name = new ObservableField<>();
     public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
+    public final ObservableField<Integer> InputTextVisibility = new ObservableField<>(View.VISIBLE);
+    public final ObservableField<Integer> TextViewVisibility = new ObservableField<>(View.INVISIBLE);
 
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        _todoItem.get_name().set(s.toString());
+        String string = s.toString();
+        ObservableField<String> todoName = _todoItem.get_name();
+        if (string.contains("\n")) {
+            InputTextVisibility.set(View.INVISIBLE);
+            TextViewVisibility.set(View.VISIBLE);
+
+            // Refresh the input field that the user pressed ENTER on
+            this.Name.notifyChange();
+        } else {
+            todoName.set(s.toString());
+        }
     }
 
     public void deleteButtonClicked(View view) {

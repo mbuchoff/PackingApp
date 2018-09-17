@@ -3,51 +3,42 @@ package buchoff.michael.packingapp;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import buchoff.michael.packingapp.databinding.TodoItemBinding;
+//import buchoff.michael.packingapp.databinding.TodoItemBinding;
 import java.util.ArrayList;
 
 import static android.databinding.DataBindingUtil.*;
 
-public class TodoListAdapter extends ArrayAdapter<TodoItemViewModel> {
+public class TodoListAdapter extends RecyclerView.Adapter<TodoListViewHolder> {
+    // TODO:  Move the array out of here and make it observable
+    ArrayList<TodoItemViewModel> _viewModels = new ArrayList<>();
 
+    @NonNull
     @Override
-    public void add(@Nullable TodoItemViewModel object)
-    {
-        super.add(object);
-
-        object.set_listener(new TodoItemViewModel.Listener() {
-            @Override
-            public void requestDeletion(TodoItemViewModel viewModel) {
-                TodoListAdapter.this.remove(viewModel);
-            }
-        });
-    }
-
-    public TodoListAdapter(Context context, ArrayList<TodoItemViewModel> viewModels) {
-        super(context, 0, viewModels);
+    public TodoListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item, parent, false);
+        return new TodoListViewHolder(listItem);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        TodoItemViewModel viewModel = getItem(position);
-
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.todo_item, parent, false);
+    public void onBindViewHolder(@NonNull TodoListViewHolder holder, int position) {
+        while (_viewModels.size() <= position)
+        {
+            _viewModels.add(new TodoItemViewModel(new TodoItem("default name")));
         }
 
-        TodoItemBinding todoItemBinding = bind(convertView);
-        todoItemBinding.setViewModel(viewModel);
+        holder.setViewModel(_viewModels.get(position));
+    }
 
-        // Return the completed view to render on screen
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return _viewModels.size();
     }
 }
