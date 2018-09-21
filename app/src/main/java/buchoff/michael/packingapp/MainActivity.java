@@ -20,6 +20,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import buchoff.michael.packingapp.Models.TodoItem;
+import buchoff.michael.packingapp.ViewModels.TodoItemViewModel;
+
 public class MainActivity extends AppCompatActivity {
     private LinearLayout _linearLayout;
     private ListView _listView;

@@ -1,20 +1,19 @@
-package buchoff.michael.packingapp;
+package buchoff.michael.packingapp.ViewModels;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.graphics.Color;
-import android.speech.tts.TextToSpeech;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
+
+import buchoff.michael.packingapp.Models.TodoItem;
 
 public class TodoItemViewModel extends ViewModel {
     private TodoItem _todoItem;
     private boolean _isEditing = true;
-    private Listener _listener = null;
+    private TodoItemViewModel.Listener _listener = null;
 
-    interface Listener
+    public interface Listener
     {
         void requestDeletion(TodoItemViewModel viewModel);
     }
@@ -40,7 +39,7 @@ public class TodoItemViewModel extends ViewModel {
         });
     }
 
-    public void set_listener(Listener listener) {
+    public void set_listener(TodoItemViewModel.Listener listener) {
         _listener = listener;
     }
 

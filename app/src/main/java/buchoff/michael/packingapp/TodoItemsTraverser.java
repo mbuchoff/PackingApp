@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import buchoff.michael.packingapp.Models.TodoItem;
+import buchoff.michael.packingapp.ViewModels.TodoItemViewModel;
+
 public class TodoItemsTraverser {
     private ArrayAdapter<TodoItemViewModel> _todoItemViewModels;
     private int _todoItemIndex = 0;
