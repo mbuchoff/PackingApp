@@ -6,6 +6,7 @@ package buchoff.michael.packingapp;
 // TODO:  Save/Load
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         TodoItem todoItem = new TodoItem("Hello");
         _adapter.add(new TodoItemViewModel(todoItem));
         _listenButton.setEnabled(true);
+
+        Intent intent = new Intent(this, DetailActivity.class);
+        startActivity(intent);
     }
 
     public void listenButtonClicked(View view) {

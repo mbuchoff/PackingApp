@@ -6,16 +6,16 @@
     </data>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@{viewModel.BackgroundColor}">
-        <TextView
-            android:layout_gravity="left"
-            android:gravity="left"
-            android:id="@+id/textBox"
-            android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.Name}"
+            android:textSize="20dp"/>
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.Name}"/>
+            android:text="OK"/>
     </LinearLayout>
 </layout>
