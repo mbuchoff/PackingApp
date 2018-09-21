@@ -6,7 +6,11 @@ public class TodoList extends ArrayList<TodoItem> {
     private static TodoList _instance = new TodoList();
 
     // Private constructor
-    private TodoList() { }
+    private TodoList()
+    {
+        add(new TodoItem("First todo item"));
+        add(new TodoItem("Second todo item..."));
+    }
 
-    public static TodoList getInstance() { return _instance; }
+    public static TodoList get_instance() { return _instance; }
 }
