@@ -7,8 +7,11 @@ package buchoff.michael.packingapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,46 +25,51 @@ import java.util.ArrayList;
 
 import buchoff.michael.packingapp.Models.TodoItem;
 import buchoff.michael.packingapp.ViewModels.TodoItemViewModel;
+import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout _linearLayout;
-    private ListView _listView;
+    private RecyclerView _recyclerView;
     private LayoutInflater _layoutInflater;
     private TodoListAdapter _adapter;
     private Button _listenButton;
     private TodoItemsTraverser _todoItemsTraverser;
 
+    ActivityMainBinding _binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        _binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         _linearLayout = findViewById(R.id.LinearLayout);
-        _listView = findViewById(R.id.listView);
+        _recyclerView = findViewById(R.id.recyclerView);
         _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         _listenButton = findViewById(R.id.listenButton);
 
-        _adapter = new TodoListAdapter(this, new ArrayList<TodoItemViewModel>());
-        _listView.setAdapter(_adapter);
-        _todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
-        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
-            @Override
-            public void onWordsSpoken(String wordsSpoken) {
-                _listenButton.setText(wordsSpoken);
-            }
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
+        _recyclerView.setLayoutManager(layoutManager);
+        TodoListAdapter adapter = new TodoListAdapter();
+        _recyclerView.setAdapter(adapter);
 
-            @Override
-            public void onSpeechRecognitionReady() {
-                _listenButton.setText("HIT IT!");
-            }
-        });
+        //_todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
+        //_todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
+        //    @Override
+        //    public void onWordsSpoken(String wordsSpoken) {
+        //        _listenButton.setText(wordsSpoken);
+        //    }
+        //
+        //    @Override
+        //    public void onSpeechRecognitionReady() {
+        //        _listenButton.setText("HIT IT!");
+        //    }
+        //});
     }
 
     public void plusButtonClicked(View view) {
         TodoItem todoItem = new TodoItem("Hello");
-        _adapter.add(new TodoItemViewModel(todoItem));
         _listenButton.setEnabled(true);
 
         Intent intent = new Intent(this, DetailActivity.class);
