@@ -6,15 +6,20 @@ import buchoff.michael.packingapp.Models.TodoItem;
 import buchoff.michael.packingapp.Models.TodoList;
 
 public class TodoListViewModel {
-    private static TodoListViewModel _instance = new TodoListViewModel(TodoList.get_instance());
-    private final TodoList _model;
+    public interface Listener
+    {
+        void editTodoList(TodoItem todoItem);
+    }
+
     private final ArrayList<TodoItemViewModel> _todoItemViewModels = new ArrayList<>();
+    private final Listener _listener;
 
     // Private constructor
-    private TodoListViewModel(TodoList model)
+    public TodoListViewModel(Listener listener)
     {
-        _model = model;
-        for (TodoItem todoItem : _model) {
+        _listener = listener;
+
+        for (TodoItem todoItem : TodoList.get_instance()) {
             _todoItemViewModels.add(new TodoItemViewModel(todoItem));
         }
     }
@@ -24,5 +29,9 @@ public class TodoListViewModel {
         return _todoItemViewModels.get(position);
     }
 
-    public static TodoListViewModel get_instance() { return _instance; }
+    public void plusButtonClicked()
+    {
+        TodoItem todoItem = new TodoItem("Hello");
+        _listener.editTodoList(todoItem);
+    }
 }

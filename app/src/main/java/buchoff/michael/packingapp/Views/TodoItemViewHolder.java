@@ -1,5 +1,6 @@
-package buchoff.michael.packingapp;
+package buchoff.michael.packingapp.Views;
 
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -16,9 +17,9 @@ public class TodoItemViewHolder extends RecyclerView.ViewHolder {
         _itemView = itemView;
     }
 
-    public void setViewModel(TodoItemViewModel viewModel)
+    public void bind(TodoItemViewModel viewModel)
     {
-        TodoItemBinding todoItemBinding = bind(_itemView);
+        TodoItemBinding todoItemBinding = DataBindingUtil.bind(_itemView);
         todoItemBinding.setViewModel(viewModel);
     }
 }

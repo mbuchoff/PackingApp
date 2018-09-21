@@ -1,4 +1,4 @@
-package buchoff.michael.packingapp;
+package buchoff.michael.packingapp.Views;
 
 // TODO:  Run Lint
 // TODO:  Stop Listening Button
@@ -19,21 +19,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.ViewModels.TodoItemViewModel;
+import buchoff.michael.packingapp.R;
+import buchoff.michael.packingapp.TodoItemsTraverser;
+import buchoff.michael.packingapp.ViewModels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
-    private LinearLayout _linearLayout;
-    private RecyclerView _recyclerView;
-    private LayoutInflater _layoutInflater;
-    private TodoListAdapter _adapter;
-    private Button _listenButton;
-    private TodoItemsTraverser _todoItemsTraverser;
+public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
+    RecyclerView _recyclerView;
+    Button _listenButton;
+    TodoItemsTraverser _todoItemsTraverser;
 
     ActivityMainBinding _binding;
 
@@ -41,17 +37,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         _binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        TodoListViewModel viewModel = new TodoListViewModel(this);
+        _binding.setViewModel(viewModel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        _linearLayout = findViewById(R.id.LinearLayout);
         _recyclerView = findViewById(R.id.recyclerView);
-        _layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        _listenButton = findViewById(R.id.listenButton);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
         _recyclerView.setLayoutManager(layoutManager);
-        TodoListAdapter adapter = new TodoListAdapter();
+        TodoListAdapter adapter = new TodoListAdapter(viewModel);
         _recyclerView.setAdapter(adapter);
 
         //_todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
@@ -66,14 +61,6 @@ public class MainActivity extends AppCompatActivity {
         //        _listenButton.setText("HIT IT!");
         //    }
         //});
-    }
-
-    public void plusButtonClicked(View view) {
-        TodoItem todoItem = new TodoItem("Hello");
-        _listenButton.setEnabled(true);
-
-        Intent intent = new Intent(this, DetailActivity.class);
-        startActivity(intent);
     }
 
     public void listenButtonClicked(View view) {
@@ -102,5 +89,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void editTodoList(TodoItem todoItem) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        startActivity(intent);
     }
 }
