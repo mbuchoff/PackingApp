@@ -4,7 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import buchoff.michael.packingapp.ViewModels.TodoItemViewModel;
+import buchoff.michael.packingapp.ViewModels.TodoListItemViewModel;
 import buchoff.michael.packingapp.databinding.TodoItemBinding;
 
 import static android.databinding.DataBindingUtil.bind;
@@ -17,7 +17,7 @@ public class TodoItemViewHolder extends RecyclerView.ViewHolder {
         _itemView = itemView;
     }
 
-    public void bind(TodoItemViewModel viewModel)
+    public void bind(TodoListItemViewModel viewModel)
     {
         TodoItemBinding todoItemBinding = DataBindingUtil.bind(_itemView);
         todoItemBinding.setViewModel(viewModel);

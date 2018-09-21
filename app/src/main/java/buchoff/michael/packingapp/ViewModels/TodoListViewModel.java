@@ -11,7 +11,7 @@ public class TodoListViewModel {
         void editTodoList(TodoItem todoItem);
     }
 
-    private final ArrayList<TodoItemViewModel> _todoItemViewModels = new ArrayList<>();
+    private final ArrayList<TodoListItemViewModel> _todoListItemViewModels = new ArrayList<>();
     private final Listener _listener;
 
     // Private constructor
@@ -20,13 +20,20 @@ public class TodoListViewModel {
         _listener = listener;
 
         for (TodoItem todoItem : TodoList.get_instance()) {
-            _todoItemViewModels.add(new TodoItemViewModel(todoItem));
+            _todoListItemViewModels.add(new TodoListItemViewModel(todoItem));
         }
     }
 
-    public TodoItemViewModel get_todoItemViewModel(int position)
+    public TodoListItemViewModel get_todoItemViewModel(int position)
     {
-        return _todoItemViewModels.get(position);
+        while (position >= _todoListItemViewModels.size())
+        {
+            int index = _todoListItemViewModels.size();
+            TodoItem todoItem = TodoList.get_instance().get(index);
+            TodoListItemViewModel todoItemViewModel = new TodoListItemViewModel(todoItem);
+            _todoListItemViewModels.add(todoItemViewModel);
+        }
+        return _todoListItemViewModels.get(position);
     }
 
     public void plusButtonClicked()

@@ -27,27 +27,23 @@ import buchoff.michael.packingapp.ViewModels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
-    RecyclerView _recyclerView;
-    Button _listenButton;
-    TodoItemsTraverser _todoItemsTraverser;
-
-    ActivityMainBinding _binding;
+    //TodoItemsTraverser _todoItemsTraverser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         TodoListViewModel viewModel = new TodoListViewModel(this);
-        _binding.setViewModel(viewModel);
+        binding.setViewModel(viewModel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        _recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayout.VERTICAL, false);
-        _recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         TodoListAdapter adapter = new TodoListAdapter(viewModel);
-        _recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         //_todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
         //_todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
@@ -64,9 +60,9 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
     }
 
     public void listenButtonClicked(View view) {
-        _listenButton.setText("Starting speech recognition...");
-        _listenButton.setEnabled(false);
-        _todoItemsTraverser.start();
+        //_listenButton.setText("Starting speech recognition...");
+        //_listenButton.setEnabled(false);
+        //_todoItemsTraverser.start();
     }
 
     @Override

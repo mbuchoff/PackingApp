@@ -2,7 +2,7 @@
     <data>
         <variable
             name="viewModel"
-            type="buchoff.michael.packingapp.ViewModels.TodoItemViewModel" />
+            type="buchoff.michael.packingapp.ViewModels.TodoItemDetailsViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,11 +11,12 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.Name}"
-            android:textSize="20dp"/>
+            android:text="@={viewModel.name}"
+            android:textSize="20sp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OK"/>
+            android:text="@{viewModel.okButtonText}"
+            android:onClick="@{(v) -> viewModel.okButtonClicked()}"/>
     </LinearLayout>
 </layout>

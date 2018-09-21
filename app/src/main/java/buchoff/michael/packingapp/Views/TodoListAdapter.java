@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import buchoff.michael.packingapp.Models.TodoList;
 import buchoff.michael.packingapp.R;
-import buchoff.michael.packingapp.ViewModels.TodoItemViewModel;
+import buchoff.michael.packingapp.ViewModels.TodoListItemViewModel;
 import buchoff.michael.packingapp.ViewModels.TodoListViewModel;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
@@ -28,8 +28,8 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TodoItemViewHolder holder, int position) {
-        TodoItemViewModel todoItemViewModel = _viewModel.get_todoItemViewModel(position);
-        holder.bind(todoItemViewModel);
+        TodoListItemViewModel todoListItemViewModel = _viewModel.get_todoItemViewModel(position);
+        holder.bind(todoListItemViewModel);
     }
 
     @Override

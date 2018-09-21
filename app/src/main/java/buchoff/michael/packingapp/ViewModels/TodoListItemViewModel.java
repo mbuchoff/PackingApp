@@ -8,17 +8,17 @@ import android.view.View;
 
 import buchoff.michael.packingapp.Models.TodoItem;
 
-public class TodoItemViewModel extends ViewModel {
+public class TodoListItemViewModel extends ViewModel {
     private TodoItem _todoItem;
     private boolean _isEditing = true;
-    private TodoItemViewModel.Listener _listener = null;
+    private TodoListItemViewModel.Listener _listener = null;
 
     public interface Listener
     {
-        void requestDeletion(TodoItemViewModel viewModel);
+        void requestDeletion(TodoListItemViewModel viewModel);
     }
 
-    public TodoItemViewModel(TodoItem todoItem)
+    public TodoListItemViewModel(TodoItem todoItem)
     {
         _todoItem = todoItem;
 
@@ -39,7 +39,7 @@ public class TodoItemViewModel extends ViewModel {
         });
     }
 
-    public void set_listener(TodoItemViewModel.Listener listener) {
+    public void set_listener(TodoListItemViewModel.Listener listener) {
         _listener = listener;
     }
 
@@ -66,10 +66,6 @@ public class TodoItemViewModel extends ViewModel {
 
     public final ObservableField<String> Name = new ObservableField<>();
     public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
-
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        _todoItem.get_name().set(s.toString());
-    }
 
     public void deleteButtonClicked(View view) {
         if (_listener != null) {
