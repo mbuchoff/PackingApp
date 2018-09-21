@@ -3,7 +3,9 @@ package buchoff.michael.packingapp.Models;
 import android.database.Observable;
 import android.databinding.ObservableField;
 
-public class TodoItem {
+import java.io.Serializable;
+
+public class TodoItem implements Serializable {
     public enum Status { PENDING, ACTIVE, FINISHED };
 
     private ObservableField<String> _name;
