@@ -4,21 +4,13 @@ import android.arch.lifecycle.ViewModel;
 import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.graphics.Color;
-import android.view.View;
 
 import buchoff.michael.packingapp.Models.TodoItem;
 
 public class TodoListItemViewModel extends ViewModel {
     private TodoItem _todoItem;
-    private boolean _isEditing = true;
-    private TodoListItemViewModel.Listener _listener = null;
 
-    public interface Listener
-    {
-        void requestDeletion(TodoListItemViewModel viewModel);
-    }
-
-    public TodoListItemViewModel(TodoItem todoItem)
+    TodoListItemViewModel(TodoItem todoItem)
     {
         _todoItem = todoItem;
 
@@ -37,10 +29,6 @@ public class TodoListItemViewModel extends ViewModel {
                 updateBackgroundColor();
             }
         });
-    }
-
-    public void set_listener(TodoListItemViewModel.Listener listener) {
-        _listener = listener;
     }
 
     public TodoItem getData() {
@@ -66,10 +54,4 @@ public class TodoListItemViewModel extends ViewModel {
 
     public final ObservableField<String> Name = new ObservableField<>();
     public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
-
-    public void deleteButtonClicked(View view) {
-        if (_listener != null) {
-            _listener.requestDeletion(this);
-        }
-    }
 }

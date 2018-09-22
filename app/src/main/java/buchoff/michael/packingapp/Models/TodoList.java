@@ -1,8 +1,8 @@
 package buchoff.michael.packingapp.Models;
 
-import java.util.ArrayList;
+import android.databinding.ObservableArrayList;
 
-public class TodoList extends ArrayList<TodoItem> {
+public class TodoList extends ObservableArrayList<TodoItem> {
     private static TodoList _instance = new TodoList();
 
     // Private constructor

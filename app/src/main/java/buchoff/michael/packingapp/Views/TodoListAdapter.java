@@ -6,6 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import buchoff.michael.packingapp.Models.TodoList;
 import buchoff.michael.packingapp.R;
 import buchoff.michael.packingapp.ViewModels.TodoListItemViewModel;
@@ -17,6 +20,13 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
     public TodoListAdapter(TodoListViewModel viewModel)
     {
         _viewModel = viewModel;
+
+        viewModel.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                TodoListAdapter.this.notifyDataSetChanged();
+            }
+        });
     }
 
     @NonNull
