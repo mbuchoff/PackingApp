@@ -17,11 +17,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import buchoff.michael.packingapp.R;
-import buchoff.michael.packingapp.ViewModels.TodoListViewModel;
+import buchoff.michael.packingapp.viewmodels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
-    //TodoItemsTraverser _todoItemsTraverser;
+    //TodoItemsIterator _todoItemsIterator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

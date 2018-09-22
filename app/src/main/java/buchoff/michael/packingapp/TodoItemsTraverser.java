@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.ViewModels.TodoListItemViewModel;
+import buchoff.michael.packingapp.viewmodels.TodoListItemViewModel;
 
 public class TodoItemsTraverser {
     private ArrayAdapter<TodoListItemViewModel> _todoItemViewModels;

@@ -11,8 +11,8 @@ import java.util.Observer;
 
 import buchoff.michael.packingapp.Models.TodoList;
 import buchoff.michael.packingapp.R;
-import buchoff.michael.packingapp.ViewModels.TodoListItemViewModel;
-import buchoff.michael.packingapp.ViewModels.TodoListViewModel;
+import buchoff.michael.packingapp.viewmodels.TodoListItemViewModel;
+import buchoff.michael.packingapp.viewmodels.TodoListViewModel;
 
 public class TodoListAdapter extends RecyclerView.Adapter<TodoItemViewHolder> {
     TodoListViewModel _viewModel;

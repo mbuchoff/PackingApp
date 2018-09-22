@@ -4,7 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import buchoff.michael.packingapp.ViewModels.TodoListItemViewModel;
+import buchoff.michael.packingapp.viewmodels.TodoListItemViewModel;
 import buchoff.michael.packingapp.databinding.TodoItemBinding;
 
 import static android.databinding.DataBindingUtil.bind;

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="buchoff.michael.packingapp.ViewModels.TodoListViewModel" />
+            type="buchoff.michael.packingapp.viewmodels.TodoListViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"

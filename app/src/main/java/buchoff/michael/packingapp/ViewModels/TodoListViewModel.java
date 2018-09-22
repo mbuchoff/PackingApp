@@ -1,4 +1,4 @@
-package buchoff.michael.packingapp.ViewModels;
+package buchoff.michael.packingapp.viewmodels;
 
 import android.databinding.ObservableList;
 
