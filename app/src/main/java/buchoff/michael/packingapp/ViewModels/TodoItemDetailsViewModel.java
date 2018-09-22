@@ -38,8 +38,7 @@ public class TodoItemDetailsViewModel extends ViewModel {
     {
         _model.get_name().set(this.name.get());
 
-        if (_isNew)
-        {
+        if (_isNew) {
             TodoList.get_instance().add(_model);
         }
 

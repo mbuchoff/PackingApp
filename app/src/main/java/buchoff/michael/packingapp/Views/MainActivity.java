@@ -68,10 +68,18 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
     }
 
     @Override
-    public void editTodoList(TodoItem todoItem) {
+    public void editTodoListItem(int index) {
+        showTodoItemDetailActivity(index);
+    }
+
+    @Override
+    public void addTodoListItem() {
+        showTodoItemDetailActivity(-1);
+    }
+
+    private void showTodoItemDetailActivity(int index){
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(DetailActivity.INTENT_TODOITEM, todoItem);
-        intent.putExtra(DetailActivity.INTENT_ISNEW, true);
+        intent.putExtra(DetailActivity.INTENT_INDEX, index);
         startActivity(intent);
     }
 }

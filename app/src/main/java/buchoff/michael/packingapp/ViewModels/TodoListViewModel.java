@@ -11,7 +11,8 @@ import buchoff.michael.packingapp.Models.TodoList;
 public class TodoListViewModel extends Observable {
     public interface Listener
     {
-        void editTodoList(TodoItem todoItem);
+        void editTodoListItem(int index);
+        void addTodoListItem();
     }
 
     private final ArrayList<TodoListItemViewModel> _todoListItemViewModels = new ArrayList<>();
@@ -23,7 +24,7 @@ public class TodoListViewModel extends Observable {
         _listener = listener;
 
         for (TodoItem todoItem : TodoList.get_instance()) {
-            _todoListItemViewModels.add(new TodoListItemViewModel(todoItem));
+            addTodoItem(todoItem);
         }
 
         TodoList.get_instance().addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<TodoItem>>() {
@@ -51,12 +52,12 @@ public class TodoListViewModel extends Observable {
             public void onItemRangeRemoved(ObservableList<TodoItem> sender, int positionStart, int itemCount) {
                 somethingChanged();
             }
-
-            private void somethingChanged() {
-                setChanged();
-                notifyObservers();
-            }
         });
+    }
+
+    private void somethingChanged() {
+        setChanged();
+        notifyObservers();
     }
 
     public TodoListItemViewModel get_todoItemViewModel(int position)
@@ -65,15 +66,25 @@ public class TodoListViewModel extends Observable {
         {
             int index = _todoListItemViewModels.size();
             TodoItem todoItem = TodoList.get_instance().get(index);
-            TodoListItemViewModel todoItemViewModel = new TodoListItemViewModel(todoItem);
-            _todoListItemViewModels.add(todoItemViewModel);
+            addTodoItem(todoItem);
         }
         return _todoListItemViewModels.get(position);
     }
 
     public void plusButtonClicked()
     {
-        TodoItem todoItem = new TodoItem("Hello");
-        _listener.editTodoList(todoItem);
+        _listener.addTodoListItem();
+    }
+
+    private void addTodoItem(final TodoItem todoItem) {
+        final int index = _todoListItemViewModels.size();
+        TodoListItemViewModel.Listener todoItemListener = new TodoListItemViewModel.Listener() {
+            @Override
+            public void editTodoList() {
+                _listener.editTodoListItem(index);
+            }
+        };
+
+        _todoListItemViewModels.add(new TodoListItemViewModel(todoItemListener, todoItem));
     }
 }

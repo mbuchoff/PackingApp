@@ -8,22 +8,28 @@ import android.graphics.Color;
 import buchoff.michael.packingapp.Models.TodoItem;
 
 public class TodoListItemViewModel extends ViewModel {
-    private TodoItem _todoItem;
+    public interface Listener {
+        void editTodoList();
+    }
 
-    TodoListItemViewModel(TodoItem todoItem)
+    private TodoItem _model;
+    private Listener _listener;
+
+    TodoListItemViewModel(Listener listener, TodoItem todoItem)
     {
-        _todoItem = todoItem;
+        _model = todoItem;
+        _listener = listener;
 
         updateName();
         updateBackgroundColor();
 
-        _todoItem.get_name().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        _model.get_name().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 updateName();
             }
         });
-        _todoItem.get_status().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        _model.get_status().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 updateBackgroundColor();
@@ -32,17 +38,17 @@ public class TodoListItemViewModel extends ViewModel {
     }
 
     public TodoItem getData() {
-        return _todoItem;
+        return _model;
     }
 
     private void updateName()
     {
-        Name.set(_todoItem.get_name().get());
+        Name.set(_model.get_name().get());
     }
 
     private void updateBackgroundColor()
     {
-        TodoItem.Status status = _todoItem.get_status().get();
+        TodoItem.Status status = _model.get_status().get();
         if (status == TodoItem.Status.ACTIVE) {
             BackgroundColor.set(Color.rgb(255,255,0));
         } else if (status == TodoItem.Status.PENDING) {
@@ -54,4 +60,9 @@ public class TodoListItemViewModel extends ViewModel {
 
     public final ObservableField<String> Name = new ObservableField<>();
     public final ObservableField<Integer> BackgroundColor = new ObservableField<>();
+
+    public void itemClicked()
+    {
+        _listener.editTodoList();
+    }
 }

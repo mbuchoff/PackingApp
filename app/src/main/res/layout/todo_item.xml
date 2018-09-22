@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@{viewModel.BackgroundColor}">
+        android:background="@{viewModel.BackgroundColor}"
+        android:onClick="@{(v) -> viewModel.itemClicked()}">
         <TextView
             android:layout_gravity="left"
             android:gravity="left"
