@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import buchoff.michael.packingapp.Models.TodoItem;
 import buchoff.michael.packingapp.R;
 import buchoff.michael.packingapp.ViewModels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;

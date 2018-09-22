@@ -1,7 +1,6 @@
 package buchoff.michael.packingapp.ViewModels;
 
 import android.arch.lifecycle.ViewModel;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 
 import buchoff.michael.packingapp.Models.TodoItem;

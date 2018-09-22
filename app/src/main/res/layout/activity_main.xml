@@ -24,12 +24,6 @@
             android:orientation="vertical"
             app:layout="@layout/todo_item">
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Listen"
-                android:enabled="false"
-                android:onClick="listenButtonClicked"/>
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,8 +59,8 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="@dimen/fab_margin"
         android:layout_marginRight="90dp"
-        app:srcCompat="@android:drawable/ic_btn_speak_now"
-        android:onClick="plusButtonClicked"/>
+        android:layout_marginEnd="90dp"
+        app:srcCompat="@android:drawable/ic_btn_speak_now"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

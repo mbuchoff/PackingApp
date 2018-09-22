@@ -6,7 +6,7 @@ import android.databinding.ObservableField;
 import java.io.Serializable;
 
 public class TodoItem implements Serializable {
-    public enum Status { PENDING, ACTIVE, FINISHED };
+    public enum Status { PENDING, ACTIVE, FINISHED }
 
     private ObservableField<String> _name;
     private ObservableField<Status> _status = new ObservableField<>(Status.PENDING);
