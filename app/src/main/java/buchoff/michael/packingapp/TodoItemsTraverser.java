@@ -9,8 +9,11 @@ import android.widget.ArrayAdapter;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import buchoff.michael.packingapp.Models.TodoItem;
+import buchoff.michael.packingapp.viewmodels.TodoListItemViewModel;
+
 public class TodoItemsTraverser {
-    private ArrayAdapter<TodoItemViewModel> _todoItemViewModels;
+    private ArrayAdapter<TodoListItemViewModel> _todoItemViewModels;
     private int _todoItemIndex = 0;
     private ContinuousSpeechRecognizer _continuousSpeechRecognizer;
     private String _results = "";
@@ -50,7 +53,7 @@ public class TodoItemsTraverser {
         _listener = listener;
     }
 
-    TodoItemsTraverser(Activity activity, ArrayAdapter<TodoItemViewModel> todoItemViewModels) {
+    TodoItemsTraverser(Activity activity, ArrayAdapter<TodoListItemViewModel> todoItemViewModels) {
         _uiHandler = new Handler();
         _tts = TTSFactory.findTTS(activity.getApplicationContext());
         _todoItemViewModels = todoItemViewModels;
