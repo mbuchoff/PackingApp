@@ -1,4 +1,4 @@
-package buchoff.michael.packingapp.Views;
+package buchoff.michael.packingapp.views;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;

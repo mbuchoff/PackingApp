@@ -1,4 +1,4 @@
-package buchoff.michael.packingapp.Views;
+package buchoff.michael.packingapp.views;
 
 // TODO:  Run Lint
 // TODO:  Stop Listening Button

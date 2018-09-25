@@ -1,4 +1,4 @@
-package buchoff.michael.packingapp.Views;
+package buchoff.michael.packingapp.views;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import buchoff.michael.packingapp.Models.TodoItem;
 import buchoff.michael.packingapp.Models.TodoList;
 import buchoff.michael.packingapp.R;
-import buchoff.michael.packingapp.ViewModels.TodoItemDetailsViewModel;
+import buchoff.michael.packingapp.viewmodels.TodoItemDetailsViewModel;
 import buchoff.michael.packingapp.databinding.ActivityDetailBinding;
 
 public class DetailActivity extends AppCompatActivity implements TodoItemDetailsViewModel.Listener {
