@@ -4,16 +4,14 @@ import android.app.Activity;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.widget.ArrayAdapter;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
 import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.viewmodels.TodoListItemViewModel;
+import buchoff.michael.packingapp.Models.TodoList;
 
 public class TodoItemsTraverser {
-    private ArrayAdapter<TodoListItemViewModel> _todoItemViewModels;
     private int _todoItemIndex = 0;
     private ContinuousSpeechRecognizer _continuousSpeechRecognizer;
     private String _results = "";
@@ -42,21 +40,20 @@ public class TodoItemsTraverser {
         public void onError(String utteranceId) { }
     };
 
-    interface Listener
+    public interface Listener
     {
         void onWordsSpoken(String wordsSpoken);
         void onSpeechRecognitionReady();
     }
 
-    void setListener(Listener listener)
+    public void setListener(Listener listener)
     {
         _listener = listener;
     }
 
-    TodoItemsTraverser(Activity activity, ArrayAdapter<TodoListItemViewModel> todoItemViewModels) {
+    public TodoItemsTraverser(Activity activity) {
         _uiHandler = new Handler();
         _tts = TTSFactory.findTTS(activity.getApplicationContext());
-        _todoItemViewModels = todoItemViewModels;
         _continuousSpeechRecognizer = new ContinuousSpeechRecognizer(activity);
         _continuousSpeechRecognizer.setListener(new ContinuousSpeechRecognizer.Listener() {
             @Override
@@ -128,6 +125,6 @@ public class TodoItemsTraverser {
 
     private TodoItem get_todoItem()
     {
-        return _todoItemViewModels.getItem(_todoItemIndex).getData();
+        return TodoList.get_instance().get(_todoItemIndex);
     }
 }

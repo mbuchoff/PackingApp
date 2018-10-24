@@ -15,13 +15,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import buchoff.michael.packingapp.R;
+import buchoff.michael.packingapp.TodoItemsTraverser;
 import buchoff.michael.packingapp.viewmodels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
-    //TodoItemsIterator _todoItemsIterator;
+    TodoItemsTraverser _todoItemsTraverser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +41,26 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
         TodoListAdapter adapter = new TodoListAdapter(viewModel);
         recyclerView.setAdapter(adapter);
 
-        //_todoItemsTraverser = new TodoItemsTraverser(this, _adapter);
-        //_todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
-        //    @Override
-        //    public void onWordsSpoken(String wordsSpoken) {
-        //        _listenButton.setText(wordsSpoken);
-        //    }
-        //
-        //    @Override
-        //    public void onSpeechRecognitionReady() {
-        //        _listenButton.setText("HIT IT!");
-        //    }
-        //});
+        _todoItemsTraverser = new TodoItemsTraverser(this);
+        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
+            Toast _toast;
+
+            {
+                _toast = new Toast(MainActivity.this);
+            }
+
+            @Override
+            public void onWordsSpoken(String wordsSpoken) {
+                _toast.setText(wordsSpoken);
+                _toast.show();
+            }
+
+            @Override
+            public void onSpeechRecognitionReady() {
+                _toast.setText("HIT IT!");
+                _toast.show();
+            }
+        });
     }
 
     public void listenButtonClicked(View view) {
