@@ -23,13 +23,12 @@ import buchoff.michael.packingapp.viewmodels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
-    TodoItemsTraverser _todoItemsTraverser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        TodoListViewModel viewModel = new TodoListViewModel(this);
+        TodoListViewModel viewModel = new TodoListViewModel(this, this);
         binding.setViewModel(viewModel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,33 +39,6 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
         recyclerView.setLayoutManager(layoutManager);
         TodoListAdapter adapter = new TodoListAdapter(viewModel);
         recyclerView.setAdapter(adapter);
-
-        _todoItemsTraverser = new TodoItemsTraverser(this);
-        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
-            Toast _toast;
-
-            {
-                _toast = new Toast(MainActivity.this);
-            }
-
-            @Override
-            public void onWordsSpoken(String wordsSpoken) {
-                _toast.setText(wordsSpoken);
-                _toast.show();
-            }
-
-            @Override
-            public void onSpeechRecognitionReady() {
-                _toast.setText("HIT IT!");
-                _toast.show();
-            }
-        });
-    }
-
-    public void listenButtonClicked(View view) {
-        //_listenButton.setText("Starting speech recognition...");
-        //_listenButton.setEnabled(false);
-        //_todoItemsTraverser.start();
     }
 
     @Override

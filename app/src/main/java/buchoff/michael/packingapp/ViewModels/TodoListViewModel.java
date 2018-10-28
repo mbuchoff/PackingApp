@@ -1,12 +1,17 @@
 package buchoff.michael.packingapp.viewmodels;
 
+import android.app.Activity;
 import android.databinding.ObservableList;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Observable;
 
-import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.Models.TodoList;
+import buchoff.michael.packingapp.models.TodoItem;
+import buchoff.michael.packingapp.models.TodoList;
+import buchoff.michael.packingapp.TodoItemsTraverser;
+import buchoff.michael.packingapp.views.MainActivity;
 
 public class TodoListViewModel extends Observable {
     public interface Listener
@@ -15,11 +20,12 @@ public class TodoListViewModel extends Observable {
         void addTodoListItem();
     }
 
+    TodoItemsTraverser _todoItemsTraverser;
     private final ArrayList<TodoListItemViewModel> _todoListItemViewModels = new ArrayList<>();
     private final Listener _listener;
 
     // Private constructor
-    public TodoListViewModel(Listener listener)
+    public TodoListViewModel(final Activity activity, Listener listener)
     {
         _listener = listener;
 
@@ -53,6 +59,27 @@ public class TodoListViewModel extends Observable {
                 somethingChanged();
             }
         });
+
+        _todoItemsTraverser = new TodoItemsTraverser(activity);
+        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
+            Toast _toast;
+
+            {
+                _toast = new Toast(activity);
+            }
+
+            @Override
+            public void onWordsSpoken(String wordsSpoken) {
+                _toast.setText(wordsSpoken);
+                _toast.show();
+            }
+
+            @Override
+            public void onSpeechRecognitionReady() {
+                _toast.setText("HIT IT!");
+                _toast.show();
+            }
+        });
     }
 
     private void somethingChanged() {
@@ -75,6 +102,14 @@ public class TodoListViewModel extends Observable {
     {
         _listener.addTodoListItem();
     }
+
+    public void listenButtonClicked() {
+        //_listenButton.setText("Starting speech recognition...");
+        //_listenButton.setEnabled(false);
+        //_todoItemsTraverser.start();
+    }
+
+
 
     private void addTodoItem(final TodoItem todoItem) {
         final int index = _todoListItemViewModels.size();

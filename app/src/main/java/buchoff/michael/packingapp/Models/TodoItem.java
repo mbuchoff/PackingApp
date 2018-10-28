@@ -1,4 +1,4 @@
-package buchoff.michael.packingapp.Models;
+package buchoff.michael.packingapp.models;
 
 import android.database.Observable;
 import android.databinding.ObservableField;

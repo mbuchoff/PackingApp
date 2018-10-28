@@ -5,7 +5,7 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.graphics.Color;
 
-import buchoff.michael.packingapp.Models.TodoItem;
+import buchoff.michael.packingapp.models.TodoItem;
 
 public class TodoListItemViewModel extends ViewModel {
     public interface Listener {
