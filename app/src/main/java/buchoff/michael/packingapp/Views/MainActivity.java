@@ -5,28 +5,34 @@ package buchoff.michael.packingapp.views;
 // TODO:  Crash after iterating past end of list
 // TODO:  Save/Load
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import buchoff.michael.packingapp.R;
-import buchoff.michael.packingapp.TodoItemsTraverser;
 import buchoff.michael.packingapp.viewmodels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
+    Toast _toast;
 
+    @SuppressLint("ShowToast") // Create a toast now to show later
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        _toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         TodoListViewModel viewModel = new TodoListViewModel(this, this);
         binding.setViewModel(viewModel);
@@ -56,6 +62,34 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
     @Override
     public void addTodoListItem() {
         showTodoItemDetailActivity(-1);
+    }
+
+    @Override
+    public void notifyUser(String message) {
+        _toast.setText(message);
+        _toast.show();
+    }
+
+    @Override
+    public boolean checkMicrophonePermissions() {
+        return ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
+
+    @Override
+    public void requestMicrophonePermissions() {
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+    }
+
+    @Override
+    public boolean checkInternetPermissions() {
+        return ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void requestInternetPermissions() {
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
     }
 
     private void showTodoItemDetailActivity(int index){

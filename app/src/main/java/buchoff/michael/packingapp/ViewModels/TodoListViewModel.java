@@ -1,9 +1,12 @@
 package buchoff.michael.packingapp.viewmodels;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.databinding.ObservableList;
-import android.view.View;
-import android.widget.Toast;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -11,26 +14,27 @@ import java.util.Observable;
 import buchoff.michael.packingapp.models.TodoItem;
 import buchoff.michael.packingapp.models.TodoList;
 import buchoff.michael.packingapp.TodoItemsTraverser;
-import buchoff.michael.packingapp.views.MainActivity;
 
 public class TodoListViewModel extends Observable {
-    Toast _toast;
-
     public interface Listener
     {
         void editTodoListItem(int index);
         void addTodoListItem();
+        void notifyUser(String message);
+        boolean checkMicrophonePermissions();
+        void requestMicrophonePermissions();
+        boolean checkInternetPermissions();
+        void requestInternetPermissions();
     }
 
-    TodoItemsTraverser _todoItemsTraverser;
+    private final TodoItemsTraverser _todoItemsTraverser;
     private final ArrayList<TodoListItemViewModel> _todoListItemViewModels = new ArrayList<>();
     private final Listener _listener;
 
     // Private constructor
-    public TodoListViewModel(final Activity activity, Listener listener)
+    public TodoListViewModel(final Context context, Listener listener)
     {
         _listener = listener;
-        _toast = Toast.makeText(activity.getApplicationContext(), "", Toast.LENGTH_SHORT);
 
         for (TodoItem todoItem : TodoList.get_instance()) {
             addTodoItem(todoItem);
@@ -63,21 +67,39 @@ public class TodoListViewModel extends Observable {
             }
         });
 
-        _todoItemsTraverser = new TodoItemsTraverser(activity);
-        _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
+        TodoItemsTraverser.Listener todoItemsTraverserListener = new TodoItemsTraverser.Listener() {
 
             @Override
             public void onWordsSpoken(String wordsSpoken) {
-                _toast.setText(wordsSpoken);
-                _toast.show();
+                _listener.notifyUser(wordsSpoken);
             }
 
             @Override
             public void onSpeechRecognitionReady() {
-                _toast.setText("HIT IT!");
-                _toast.show();
+                _listener.notifyUser("HIT IT!");
             }
-        });
+
+            @Override
+            public boolean checkMicrophonePermissions() {
+                return _listener.checkMicrophonePermissions();
+            }
+
+            @Override
+            public void requestMicrophonePermissions() {
+                _listener.requestMicrophonePermissions();
+            }
+
+            @Override
+            public boolean checkInternetPermissions() {
+                return _listener.checkInternetPermissions();
+            }
+
+            @Override
+            public void requestInternetPermissions() {
+                _listener.requestInternetPermissions();
+            }
+        };
+        _todoItemsTraverser = new TodoItemsTraverser(context, todoItemsTraverserListener);
     }
 
     private void somethingChanged() {
@@ -102,7 +124,7 @@ public class TodoListViewModel extends Observable {
     }
 
     public void listenButtonClicked() {
-        _toast.setText("Starting speech recognition...");
+        _listener.notifyUser("HIT IT!");
         _todoItemsTraverser.start();
     }
 

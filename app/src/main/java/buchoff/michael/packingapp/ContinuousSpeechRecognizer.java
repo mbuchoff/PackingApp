@@ -18,12 +18,11 @@ import android.util.Log;
 public class ContinuousSpeechRecognizer {
     private SpeechRecognizer _speechRecognizer;
     private Intent _speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-    private Activity _activity;
+    private Context _context;
     private int _prevVolume;
     private AudioManager _audioManager;
     private RecognitionListener _recognitionListener;
     private Listener _listener;
-    private final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
     private boolean _shouldListen = false;
     private boolean _shouldReportSpeechRecognitionReady;
 
@@ -32,11 +31,14 @@ public class ContinuousSpeechRecognizer {
         void onResults(String results);
         void onPartialResults(String partialResults);
         void onSpeechRecognitionReady();
+        boolean checkMicrophonePermissions();
+        void requestMicrophonePermissions();
+        boolean checkInternetPermissions();
+        void requestInternetPermissions();
     }
 
-    ContinuousSpeechRecognizer(Activity activity){
-        _activity = activity;
-        Context context = activity.getApplicationContext();
+    ContinuousSpeechRecognizer(Context context, Listener listener){
+        _context = context;
 
         _audioManager =(AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
         _speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context,
@@ -44,7 +46,7 @@ public class ContinuousSpeechRecognizer {
 
         _speechIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         _speechIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20L);
-        _listener = null;
+        _listener = listener;
 
         _recognitionListener = new RecognitionListener() {
             @Override
@@ -130,15 +132,9 @@ public class ContinuousSpeechRecognizer {
         _speechRecognizer.setRecognitionListener(_recognitionListener);
     }
 
-    public void setListener(Listener listener)
-    {
-        _listener = listener;
-    }
-
     public void recoverFromError() {
         _speechRecognizer.destroy();
-        _speechRecognizer = SpeechRecognizer.createSpeechRecognizer(_activity.getApplicationContext(),
-                ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
+        _speechRecognizer = SpeechRecognizer.createSpeechRecognizer(_context, ComponentName.unflattenFromString("com.google.android.googlequicksearchbox/com.google.android.voicesearch.serviceapi.GoogleRecognitionService"));
         _speechRecognizer.setRecognitionListener(_recognitionListener);
 
         restartListening();
@@ -148,17 +144,12 @@ public class ContinuousSpeechRecognizer {
         _shouldListen = true;
         _shouldReportSpeechRecognitionReady = true;
 
-        Context context = _activity.getApplicationContext();
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(_activity,
-                    new String[] {Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        if (!_listener.checkMicrophonePermissions()) {
+            _listener.requestMicrophonePermissions();
         }
 
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(_activity,
-                    new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        if (!_listener.checkInternetPermissions()) {
+            _listener.requestInternetPermissions();
         }
 
         restartListening();
