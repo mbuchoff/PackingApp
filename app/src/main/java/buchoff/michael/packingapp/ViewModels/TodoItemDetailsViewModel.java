@@ -3,8 +3,8 @@ package buchoff.michael.packingapp.viewmodels;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
 
-import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.Models.TodoList;
+import buchoff.michael.packingapp.models.TodoItem;
+import buchoff.michael.packingapp.models.TodoList;
 
 public class TodoItemDetailsViewModel extends ViewModel {
     public interface Listener

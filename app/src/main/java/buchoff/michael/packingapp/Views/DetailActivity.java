@@ -4,8 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.Models.TodoList;
+import buchoff.michael.packingapp.models.TodoItem;
+import buchoff.michael.packingapp.models.TodoList;
 import buchoff.michael.packingapp.R;
 import buchoff.michael.packingapp.viewmodels.TodoItemDetailsViewModel;
 import buchoff.michael.packingapp.databinding.ActivityDetailBinding;

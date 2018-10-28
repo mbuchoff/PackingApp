@@ -8,8 +8,8 @@ import android.speech.tts.UtteranceProgressListener;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import buchoff.michael.packingapp.Models.TodoItem;
-import buchoff.michael.packingapp.Models.TodoList;
+import buchoff.michael.packingapp.models.TodoItem;
+import buchoff.michael.packingapp.models.TodoList;
 
 public class TodoItemsTraverser {
     private int _todoItemIndex = 0;

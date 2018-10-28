@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import java.util.Observable;
 import java.util.Observer;
 
-import buchoff.michael.packingapp.Models.TodoList;
+import buchoff.michael.packingapp.models.TodoList;
 import buchoff.michael.packingapp.R;
 import buchoff.michael.packingapp.viewmodels.TodoListItemViewModel;
 import buchoff.michael.packingapp.viewmodels.TodoListViewModel;

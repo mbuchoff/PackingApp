@@ -14,6 +14,8 @@ import buchoff.michael.packingapp.TodoItemsTraverser;
 import buchoff.michael.packingapp.views.MainActivity;
 
 public class TodoListViewModel extends Observable {
+    Toast _toast;
+
     public interface Listener
     {
         void editTodoListItem(int index);
@@ -28,6 +30,7 @@ public class TodoListViewModel extends Observable {
     public TodoListViewModel(final Activity activity, Listener listener)
     {
         _listener = listener;
+        _toast = Toast.makeText(activity.getApplicationContext(), "", Toast.LENGTH_SHORT);
 
         for (TodoItem todoItem : TodoList.get_instance()) {
             addTodoItem(todoItem);
@@ -62,11 +65,6 @@ public class TodoListViewModel extends Observable {
 
         _todoItemsTraverser = new TodoItemsTraverser(activity);
         _todoItemsTraverser.setListener(new TodoItemsTraverser.Listener() {
-            Toast _toast;
-
-            {
-                _toast = new Toast(activity);
-            }
 
             @Override
             public void onWordsSpoken(String wordsSpoken) {
@@ -104,9 +102,8 @@ public class TodoListViewModel extends Observable {
     }
 
     public void listenButtonClicked() {
-        //_listenButton.setText("Starting speech recognition...");
-        //_listenButton.setEnabled(false);
-        //_todoItemsTraverser.start();
+        _toast.setText("Starting speech recognition...");
+        _todoItemsTraverser.start();
     }
 
 
