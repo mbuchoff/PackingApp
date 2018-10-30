@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import buchoff.michael.packingapp.RequestPermissionsListener;
 import buchoff.michael.packingapp.models.TodoItem;
 import buchoff.michael.packingapp.models.TodoList;
 import buchoff.michael.packingapp.TodoItemsTraverser;
@@ -21,10 +22,6 @@ public class TodoListViewModel extends Observable {
         void editTodoListItem(int index);
         void addTodoListItem();
         void notifyUser(String message);
-        boolean checkMicrophonePermissions();
-        void requestMicrophonePermissions();
-        boolean checkInternetPermissions();
-        void requestInternetPermissions();
     }
 
     private final TodoItemsTraverser _todoItemsTraverser;
@@ -32,7 +29,9 @@ public class TodoListViewModel extends Observable {
     private final Listener _listener;
 
     // Private constructor
-    public TodoListViewModel(final Context context, Listener listener)
+    public TodoListViewModel(final Context context,
+                             Listener listener,
+                             RequestPermissionsListener requestPermissionsListener)
     {
         _listener = listener;
 
@@ -78,28 +77,8 @@ public class TodoListViewModel extends Observable {
             public void onSpeechRecognitionReady() {
                 _listener.notifyUser("HIT IT!");
             }
-
-            @Override
-            public boolean checkMicrophonePermissions() {
-                return _listener.checkMicrophonePermissions();
-            }
-
-            @Override
-            public void requestMicrophonePermissions() {
-                _listener.requestMicrophonePermissions();
-            }
-
-            @Override
-            public boolean checkInternetPermissions() {
-                return _listener.checkInternetPermissions();
-            }
-
-            @Override
-            public void requestInternetPermissions() {
-                _listener.requestInternetPermissions();
-            }
         };
-        _todoItemsTraverser = new TodoItemsTraverser(context, todoItemsTraverserListener);
+        _todoItemsTraverser = new TodoItemsTraverser(context, todoItemsTraverserListener, requestPermissionsListener);
     }
 
     private void somethingChanged() {
@@ -124,7 +103,6 @@ public class TodoListViewModel extends Observable {
     }
 
     public void listenButtonClicked() {
-        _listener.notifyUser("HIT IT!");
         _todoItemsTraverser.start();
     }
 

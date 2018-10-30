@@ -1,26 +1,19 @@
 package buchoff.michael.packingapp;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-
-import java.util.Arrays;
-import java.util.HashMap;
-
 import buchoff.michael.packingapp.models.TodoItem;
 import buchoff.michael.packingapp.models.TodoList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class TodoItemsTraverser {
     private int _todoItemIndex = 0;
     private ContinuousSpeechRecognizer _continuousSpeechRecognizer;
     private String _results = "";
-    private Listener _listener;
+    private final Listener _listener;
     private TextToSpeech _tts;
     private Handler _uiHandler;
     private boolean _keyphraseDetectedThisResultsSession;
@@ -49,13 +42,9 @@ public class TodoItemsTraverser {
     {
         void onWordsSpoken(String wordsSpoken);
         void onSpeechRecognitionReady();
-        boolean checkMicrophonePermissions();
-        void requestMicrophonePermissions();
-        boolean checkInternetPermissions();
-        void requestInternetPermissions();
     }
 
-    public TodoItemsTraverser(final Context context, Listener listener) {
+    public TodoItemsTraverser(final Context context, Listener listener, RequestPermissionsListener requestPermissionsListener) {
         _listener = listener;
         _uiHandler = new Handler();
         _tts = TTSFactory.findTTS(context);
@@ -84,26 +73,6 @@ public class TodoItemsTraverser {
                 }
             }
 
-            @Override
-            public boolean checkMicrophonePermissions() {
-                return _listener.checkMicrophonePermissions();
-            }
-
-            @Override
-            public void requestMicrophonePermissions() {
-                _listener.requestMicrophonePermissions();
-            }
-
-            @Override
-            public boolean checkInternetPermissions() {
-                return _listener.checkInternetPermissions();
-            }
-
-            @Override
-            public void requestInternetPermissions() {
-                _listener.requestInternetPermissions();
-            }
-
             void wordsSpoken(String words)
             {
                 if (_listener != null) {
@@ -123,7 +92,7 @@ public class TodoItemsTraverser {
             }
         };
 
-        _continuousSpeechRecognizer = new ContinuousSpeechRecognizer(context, continuousSpeechRecognizerListener);
+        _continuousSpeechRecognizer = new ContinuousSpeechRecognizer(context, continuousSpeechRecognizerListener, requestPermissionsListener);
     }
 
     public void start()

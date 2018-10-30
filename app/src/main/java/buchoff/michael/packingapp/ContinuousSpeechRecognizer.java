@@ -23,6 +23,7 @@ public class ContinuousSpeechRecognizer {
     private AudioManager _audioManager;
     private RecognitionListener _recognitionListener;
     private Listener _listener;
+    private RequestPermissionsListener _requestPermissionsListener;
     private boolean _shouldListen = false;
     private boolean _shouldReportSpeechRecognitionReady;
 
@@ -31,13 +32,9 @@ public class ContinuousSpeechRecognizer {
         void onResults(String results);
         void onPartialResults(String partialResults);
         void onSpeechRecognitionReady();
-        boolean checkMicrophonePermissions();
-        void requestMicrophonePermissions();
-        boolean checkInternetPermissions();
-        void requestInternetPermissions();
     }
 
-    ContinuousSpeechRecognizer(Context context, Listener listener){
+    ContinuousSpeechRecognizer(Context context, Listener listener, RequestPermissionsListener requestPermissionsListener){
         _context = context;
 
         _audioManager =(AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
@@ -47,6 +44,7 @@ public class ContinuousSpeechRecognizer {
         _speechIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
         _speechIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20L);
         _listener = listener;
+        _requestPermissionsListener = requestPermissionsListener;
 
         _recognitionListener = new RecognitionListener() {
             @Override
@@ -94,6 +92,8 @@ public class ContinuousSpeechRecognizer {
                 } else if (error == SpeechRecognizer.ERROR_NO_MATCH) {
                     Log.e("SpeechRecognizer", "onError - No recognition result matched.");
                     restartListening();
+                } else if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
+                    Log.e("SpeechRecognizer", "onError - ERROR_INSUFFICIENT_PERMISSIONS");
                 } else {
                     Log.e("SpeechRecognizer", "onError - " + Integer.valueOf(error).toString());
                 }
@@ -140,19 +140,26 @@ public class ContinuousSpeechRecognizer {
         restartListening();
     }
 
-    public void startListening() {
+    public boolean startListening() {
         _shouldListen = true;
         _shouldReportSpeechRecognitionReady = true;
 
-        if (!_listener.checkMicrophonePermissions()) {
-            _listener.requestMicrophonePermissions();
+        if (!_requestPermissionsListener.checkMicrophonePermissions()) {
+            _requestPermissionsListener.requestMicrophonePermissions();
+            if (!_requestPermissionsListener.checkMicrophonePermissions()) {
+                return false;
+            }
         }
 
-        if (!_listener.checkInternetPermissions()) {
-            _listener.requestInternetPermissions();
+        if (!_requestPermissionsListener.checkInternetPermissions()) {
+            _requestPermissionsListener.requestInternetPermissions();
+            if (!_requestPermissionsListener.checkInternetPermissions()) {
+                return false;
+            }
         }
 
         restartListening();
+        return true;
     }
 
     private void restartListening() {

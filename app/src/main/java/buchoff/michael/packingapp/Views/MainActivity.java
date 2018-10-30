@@ -22,10 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import buchoff.michael.packingapp.R;
+import buchoff.michael.packingapp.RequestPermissionsListener;
 import buchoff.michael.packingapp.viewmodels.TodoListViewModel;
 import buchoff.michael.packingapp.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener {
+public class MainActivity extends AppCompatActivity implements TodoListViewModel.Listener, RequestPermissionsListener {
     Toast _toast;
 
     @SuppressLint("ShowToast") // Create a toast now to show later
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
         super.onCreate(savedInstanceState);
         _toast = Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        TodoListViewModel viewModel = new TodoListViewModel(this, this);
+        TodoListViewModel viewModel = new TodoListViewModel(this, this, this);
         binding.setViewModel(viewModel);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,26 +71,26 @@ public class MainActivity extends AppCompatActivity implements TodoListViewModel
         _toast.show();
     }
 
+    final int PERMISSIONS_REQUEST_CODE = 2468;
+
     @Override
     public boolean checkMicrophonePermissions() {
-        return ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
     }
-
-    final int MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE = 2468;
 
     @Override
     public void requestMicrophonePermissions() {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_CODE);
     }
 
     @Override
     public boolean checkInternetPermissions() {
-        return ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public void requestInternetPermissions() {
-        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_RECORD_MICROPHONE);
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.INTERNET}, PERMISSIONS_REQUEST_CODE);
     }
 
     private void showTodoItemDetailActivity(int index){
