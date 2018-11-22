@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.concurrent.Semaphore;
 
 class TTSFactory {
-    public static TextToSpeech findTTS(Context context) {
+    static TextToSpeech findTTS(Context context) {
         for (TTSContainer ttsContainer : ttsContainers) {
             if (ttsContainer._context == context) {
                 return ttsContainer._tts;
@@ -28,7 +28,7 @@ class TTSFactory {
         private Context _context;
         private Semaphore _ttsLock = new Semaphore(1);
 
-        public TTSContainer(Context context) {
+        TTSContainer(Context context) {
             _context = context;
             if (_tts == null) {
                 try {
@@ -46,7 +46,7 @@ class TTSFactory {
                         });
                     }
                 } catch (InterruptedException e) {
-                    Toast.makeText(context, "Unable to initialize text-to-speech!", 20);
+                    Toast.makeText(context, "Unable to initialize text-to-speech!", Toast.LENGTH_LONG).show();
                     _ttsLock.release();
                 }
             }
