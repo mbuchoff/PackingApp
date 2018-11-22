@@ -20,11 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import edu.cmu.pocketsphinx.Assets;
-import edu.cmu.pocketsphinx.Hypothesis;
-import edu.cmu.pocketsphinx.RecognitionListener;
-import edu.cmu.pocketsphinx.SpeechRecognizer;
-
 
 import buchoff.michael.packingapp.R;
 import buchoff.michael.packingapp.RequestPermissionsListener;
