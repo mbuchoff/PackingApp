@@ -60,3 +60,7 @@ speech/build/intermediates/incremental/debug-mergeJavaRes/merge-state
 speech/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml
 speech/build/intermediates/incremental/packageDebugResources/merger.xml
 speech/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
+speech/build/intermediates/res/symbol-table-with-package/debug/package-aware-r.txt
+speech/build/generated/source/buildConfig/debug/net/gotev/speech/BuildConfig.java
+speech/build/outputs/logs/manifest-merger-debug-report.txt
+speech/build/intermediates/incremental/packageDebugResources/compile-file-map.properties
