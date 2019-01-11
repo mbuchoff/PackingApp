@@ -57,3 +57,6 @@ speech/build/intermediates/incremental/packageDebugAssets/merger.xml
 speech/build/intermediates/incremental/mergeDebugShaders/merger.xml
 speech/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 speech/build/intermediates/incremental/debug-mergeJavaRes/merge-state
+speech/build/intermediates/merged_manifests/debug/processDebugManifest/merged/AndroidManifest.xml
+speech/build/intermediates/incremental/packageDebugResources/merger.xml
+speech/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/AndroidManifest.xml
